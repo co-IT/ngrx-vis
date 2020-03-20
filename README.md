@@ -31,6 +31,12 @@ Both using the same Type-System but provide the action creators in different way
 
 We need to organize all data in a graph.
 
+#### Libraries
+
+- [Mermaid](https://mermaid-js.github.io/mermaid/#/)
+- [Vis.js](https://visjs.org/)
+- [D3](https://observablehq.com/@d3/tidy-tree)
+
 ### What information should the graph display?
 
 First example with a couple use cases. It is not meant to be complete.
