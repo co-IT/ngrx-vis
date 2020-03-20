@@ -1,11 +1,7 @@
 import { Project } from 'ts-morph'
 
-const project = new Project({
-  skipLoadingLibFiles: true,
-  tsConfigFilePath: 'ngrx-app/tsconfig.json',
-  useInMemoryFileSystem: true
-})
+const project = new Project({ tsConfigFilePath: `./ngrx-app/tsconfig.json` })
 
-const files = project.getSourceFiles('src/test/**/*.ts')
+const files = project.getSourceFiles('**/*.ts')
 
 console.log(files)
