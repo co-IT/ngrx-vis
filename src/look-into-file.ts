@@ -12,24 +12,32 @@ function identifyActionReferencePurpose(
   actionReference: ReferenceEntry
 ): null | object {
   let result = null
-  const actionStoreDispatchContext = new StoreDispatchContext()
-  const actionEffectContext = new EffectContext()
+  const storeDispatchContext = new StoreDispatchContext()
+  const effectContext = new EffectContext()
+  const effectDispatchContext = new EffectDispatchContext()
   const actionReducerContext = new ReducerContext()
 
-  if (actionStoreDispatchContext.isMatch(actionReference)) {
+  if (storeDispatchContext.isMatch(actionReference)) {
     // console.log('Store Dispatch', actionStoreContext.getInfo(actionReference))
-    result = actionStoreDispatchContext.getInfo(actionReference)
+    result = storeDispatchContext.getInfo(actionReference)
   }
-  if (actionEffectContext.isMatch(actionReference)) {
+  if (effectContext.isMatch(actionReference)) {
     // console.log('Effect', actionEffectContext.getInfo(actionReference))
-    result = actionEffectContext.getInfo(actionReference)
+    result = effectContext.getInfo(actionReference)
   }
   if (actionReducerContext.isMatch(actionReference)) {
     // console.log('Reducer', actionReducerContext.getInfo(actionReference))
     result = actionReducerContext.getInfo(actionReference)
   }
 
-  new EffectDispatchContext().isMatch(actionReference)
+  if (effectDispatchContext.isMatch(actionReference)) {
+    console.log(
+      'Effect Dispatch',
+      effectDispatchContext.getInfo(actionReference)
+    )
+
+    result = effectDispatchContext.getInfo(actionReference)
+  }
 
   return result
 }
@@ -134,26 +142,19 @@ class EffectContext implements ActionUsageContext {
 
 class EffectDispatchContext implements ActionUsageContext {
   isMatch(actionReference: ReferenceEntry): boolean {
-    const actionType = actionReference.getNode().getText()
     const caller = actionReference
       .getNode()
       .getFirstAncestorByKind(SyntaxKind.PropertyDeclaration)
 
-    console.log('Type', actionType)
-
-    console.log(
-      'Action Type',
-      actionReference
-        .getNode()
-        .getType()
-        .getText()
-    )
-
-    console.log(extractNgRxActionType(actionReference))
-
+    // console.log(extractNgRxActionType(actionReference))
     // console.log('Effect property', caller?.getType().getText())
 
-    return !caller ? false : caller.getText().includes('ofType(')
+    return !caller
+      ? false
+      : caller
+          ?.getType()
+          .getText()
+          .includes(extractNgRxActionType(actionReference))
   }
 
   getInfo(actionReference: ReferenceEntry): ActionUsageInfo {
@@ -164,14 +165,16 @@ class EffectDispatchContext implements ActionUsageContext {
   }
 }
 
-function extractNgRxActionType(actionReference: ReferenceEntry): void {
+function extractNgRxActionType(actionReference: ReferenceEntry): string {
   const fullQualifiedImport = actionReference
     .getNode()
     .getType()
     .getText()
 
-  const matches = /.+(TypedAction<".+">).+/.exec(fullQualifiedImport) || []
-  console.log(matches)
+  const [, typedAction] =
+    /.+(TypedAction<".+">).+/.exec(fullQualifiedImport) || []
+
+  return typedAction
 }
 
 function isNgRxTypedAction(declaration: VariableDeclaration): boolean {
