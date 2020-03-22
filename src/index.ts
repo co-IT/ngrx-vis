@@ -5,4 +5,4 @@ const project = new Project({ tsConfigFilePath: `./ngrx-app/tsconfig.json` })
 const files = project.getSourceFiles('**/*.actions.ts')
 
 const result = files.map(file => findActions(file))
-// console.log(result)
+console.log(result)

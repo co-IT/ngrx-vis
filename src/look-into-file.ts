@@ -11,55 +11,35 @@ import {
 function identifyActionReferencePurpose(
   actionReference: ReferenceEntry
 ): null | object {
-  const ancestor = actionReference
-    .getNode()
-    .getFirstAncestorByKind(SyntaxKind.CallExpression)
+  let result = null
+  const actionStoreContext = new ActionStoreContext()
+  const actionEffectContext = new ActionEffectContext()
+  const actionReducerContext = new ActionReducerContext()
 
-  if (!ancestor) {
-    return null
+  if (actionStoreContext.isMatch(actionReference)) {
+    // console.log('Store Dispatch', actionStoreContext.getInfo(actionReference))
+    result = actionStoreContext.getInfo(actionReference)
+  }
+  if (actionEffectContext.isMatch(actionReference)) {
+    // console.log('Effect', actionEffectContext.getInfo(actionReference))
+    result = actionEffectContext.getInfo(actionReference)
+  }
+  if (actionReducerContext.isMatch(actionReference)) {
+    // console.log('Reducer', actionReducerContext.getInfo(actionReference))
+    result = actionReducerContext.getInfo(actionReference)
   }
 
-  const ancestorTypeText = ancestor.getType().getText()
-
-  const tester = new ActionStoreContext()
-  console.log('ACTIONSTORECONTEXT' + tester.isMatch(actionReference))
-
-  if (
-    ancestorTypeText.includes('.TypedAction') &&
-    !ancestorTypeText.includes('.OperatorFunction')
-  ) {
-    const grandAncestor = ancestor.getFirstAncestorByKind(
-      SyntaxKind.CallExpression
-    )
-    console.log('===== ' + grandAncestor?.getText())
-
-    if (grandAncestor?.getText().includes('.dispatch(')) {
-      return { type: 'Dispatched', ancestorTypeText, actionReference }
-    }
-
-    return { type: 'Use of ActionCreator', ancestorTypeText, actionReference }
-  } else if (
-    ancestorTypeText.includes('.OperatorFunction') &&
-    ancestor.getText().includes('ofType(')
-  ) {
-    console.log(ancestor.getText())
-
-    return { type: 'Processed in Effect', ancestorTypeText, actionReference }
-  } else if (ancestorTypeText.includes('.On')) {
-    return { type: 'Processed in Reducer', ancestorTypeText, actionReference }
-  }
-
-  return null
+  return result
 }
 
-function identifyReferences(declaration: VariableDeclaration): string[] {
-  return declaration.findReferences().flatMap(referenceSymbol =>
-    referenceSymbol.getReferences().map(reference => {
-      console.log(identifyActionReferencePurpose(reference))
-
-      return reference.getSourceFile().getFilePath()
-    })
-  )
+function identifyReferences(declaration: VariableDeclaration): any[] {
+  return declaration
+    .findReferences()
+    .flatMap(referenceSymbol =>
+      referenceSymbol
+        .getReferences()
+        .map(reference => identifyActionReferencePurpose(reference))
+    )
 }
 
 export function findActions(file: SourceFile): object {
@@ -71,6 +51,11 @@ export function findActions(file: SourceFile): object {
   }))
 }
 
+interface ActionUsageInfo {
+  declaredName: string
+  filePath: string
+}
+
 interface ActionUsageIdentificationRules {
   dispatchers: ActionUsageContext[]
   reducers: ActionUsageContext[]
@@ -78,13 +63,18 @@ interface ActionUsageIdentificationRules {
 }
 
 class ActionContextParser {
-  constructor(usageIdentificationRules: ActionUsageIdentificationRules) {}
+  rules: ActionUsageIdentificationRules
+
+  constructor(usageIdentificationRules: ActionUsageIdentificationRules) {
+    this.rules = usageIdentificationRules
+  }
 
   run() {}
 }
 
 interface ActionUsageContext {
   isMatch(actionReference: ReferenceEntry): boolean
+  getInfo(actionReference: ReferenceEntry): ActionUsageInfo
 }
 
 class ActionStoreContext implements ActionUsageContext {
@@ -98,6 +88,13 @@ class ActionStoreContext implements ActionUsageContext {
       ? false
       : actionDispatchCall.getText().includes('.dispatch(')
   }
+
+  getInfo(actionReference: ReferenceEntry): ActionUsageInfo {
+    return {
+      declaredName: actionReference.getNode().getText(),
+      filePath: actionReference.getSourceFile().getFilePath()
+    }
+  }
 }
 
 class ActionReducerContext implements ActionUsageContext {
@@ -105,12 +102,26 @@ class ActionReducerContext implements ActionUsageContext {
     const caller = getCaller(actionReference.getNode())
     return !caller ? false : caller.getText().includes('on(')
   }
+
+  getInfo(actionReference: ReferenceEntry): ActionUsageInfo {
+    return {
+      declaredName: actionReference.getNode().getText(),
+      filePath: actionReference.getSourceFile().getFilePath()
+    }
+  }
 }
 
 class ActionEffectContext implements ActionUsageContext {
   isMatch(actionReference: ReferenceEntry): boolean {
     const caller = getCaller(actionReference.getNode())
     return !caller ? false : caller.getText().includes('ofType(')
+  }
+
+  getInfo(actionReference: ReferenceEntry): ActionUsageInfo {
+    return {
+      declaredName: actionReference.getNode().getText(),
+      filePath: actionReference.getSourceFile().getFilePath()
+    }
   }
 }
 
