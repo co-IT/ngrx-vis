@@ -1,7 +1,7 @@
 import { ReferenceEntry } from 'ts-morph'
 import { ActionUsageInfo } from './action-usage-info'
 
-export interface ActionRule {
+export interface ActionResolver {
   canExecute(actionReference: ReferenceEntry): boolean
   execute(actionReference: ReferenceEntry): ActionUsageInfo
 }

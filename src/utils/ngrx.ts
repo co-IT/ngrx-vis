@@ -3,8 +3,15 @@ import { Node, ts } from 'ts-morph'
 export function extractActionType(actionReference: Node<ts.Node>): string {
   const fullQualifiedImport = actionReference.getType().getText()
   const [, typedAction] =
-    /.+(TypedAction<".+">).+/.exec(fullQualifiedImport) || []
+    /.+(TypedAction<(.*?)>).+/.exec(fullQualifiedImport) || []
   return typedAction
+}
+
+export function extractAllActionTypes(
+  actionReference: Node<ts.Node>
+): string[] {
+  const fullQualifiedImport = actionReference.getType().getText()
+  return fullQualifiedImport.match(/(TypedAction<(.*?)>)/g) || []
 }
 
 export function extractActionPayload(

@@ -1,70 +1,72 @@
 import { ReferenceEntry } from 'ts-morph'
-import { ActionRule } from './action-reference-rule'
+import { ActionResolver } from './action-reference-resolver'
 import { ActionRuleRunnerConfiguration } from './action-rule-runner-configuration'
 import { ActionUsageInfo } from './action-usage-info'
 
 export interface ActionReferenceMap {
   dispatchers: ActionUsageInfo[]
-  effects: ActionUsageInfo[]
-  reducers: ActionUsageInfo[]
+  handlers: ActionUsageInfo[]
 }
 
-export class ActionRuleRunner {
-  private readonly emptyReferenceMap: ActionReferenceMap
-
-  private rulePipeline: {
-    type: 'dispatchers' | 'reducers' | 'effects'
-    rule: ActionRule
+export class ActionResolverRunner {
+  private resolverPipeline: {
+    type: 'dispatchers' | 'handlers'
+    rule: ActionResolver
   }[]
 
   constructor(configuration: ActionRuleRunnerConfiguration) {
-    this.emptyReferenceMap = {
-      dispatchers: [],
-      effects: [],
-      reducers: []
-    }
-
-    this.rulePipeline = [
-      ...configuration.dispatchers.map(rule => ({
-        type: 'dispatchers' as const,
-        rule
-      })),
-      ...configuration.reducers.map(rule => ({
-        type: 'reducers' as const,
-        rule
-      })),
-      ...configuration.effects.map(rule => ({
-        type: 'effects' as const,
-        rule
-      }))
-    ]
+    this.resolverPipeline = this.flattenResolvers(configuration)
   }
+
   run(actionReferences: ReferenceEntry[]): ActionReferenceMap {
     return actionReferences.reduce((result, actionReference) => {
-      const rule = this.findRule(actionReference)
+      const resolver = this.findRule(actionReference)
 
-      return !rule
+      return !resolver
         ? result
         : {
             ...result,
-            [rule.type]: [
-              ...result[rule.type],
-              rule.rule.execute(actionReference)
+            [resolver.type]: [
+              ...result[resolver.type],
+              resolver.rule.execute(actionReference)
             ]
           }
-    }, this.emptyReferenceMap)
+    }, this.createEmptyReferenceMap())
   }
+
   findRule(
     actionReference: ReferenceEntry
   ): {
-    type: 'dispatchers' | 'reducers' | 'effects'
-    rule: ActionRule
+    type: 'dispatchers' | 'handlers'
+    rule: ActionResolver
   } | null {
-    for (let { rule, type } of this.rulePipeline) {
+    for (let { rule, type } of this.resolverPipeline) {
       if (rule.canExecute(actionReference)) {
         return { rule, type }
       }
     }
     return null
+  }
+
+  private flattenResolvers(
+    configuration: ActionRuleRunnerConfiguration
+  ): { type: 'dispatchers' | 'handlers'; rule: ActionResolver }[] {
+    return [
+      ...configuration.dispatchers.map(rule => ({
+        type: 'dispatchers' as const,
+        rule
+      })),
+      ...configuration.handlers.map(rule => ({
+        type: 'handlers' as const,
+        rule
+      }))
+    ]
+  }
+
+  private createEmptyReferenceMap(): ActionReferenceMap {
+    return {
+      dispatchers: [],
+      handlers: []
+    }
   }
 }

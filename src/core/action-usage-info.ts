@@ -1,4 +1,4 @@
 export interface ActionUsageInfo {
-  declaredName: string
   filePath: string
+  followUpActions?: string[]
 }

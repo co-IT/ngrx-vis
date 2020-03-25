@@ -1,12 +1,12 @@
 import { Project, SourceFile, VariableDeclaration } from 'ts-morph'
 import { inspect } from 'util'
-import { ActionRuleRunner } from './core/action-rule-runner'
+import { ActionResolverRunner } from './core/action-rule-runner'
 import {
   EffectDispatcherRule,
-  EffectProcessingRule,
-  ReducerProcessingRule,
-  StoreDispatcherRule
-} from './rules'
+  EffectProcessingResolver,
+  ReducerProcessingResolver,
+  StoreDispatcherResolver
+} from './resolvers'
 import {
   extractActionPayload,
   extractActionType,
@@ -14,10 +14,9 @@ import {
 } from './utils/ngrx'
 
 export function identifyReferences(declaration: VariableDeclaration): any {
-  const parser = new ActionRuleRunner({
-    dispatchers: [new StoreDispatcherRule(), new EffectDispatcherRule()],
-    reducers: [new ReducerProcessingRule()],
-    effects: [new EffectProcessingRule()]
+  const parser = new ActionResolverRunner({
+    dispatchers: [new StoreDispatcherResolver(), new EffectDispatcherRule()],
+    handlers: [new ReducerProcessingResolver(), new EffectProcessingResolver()]
   })
 
   const references = declaration

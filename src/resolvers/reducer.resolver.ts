@@ -1,16 +1,15 @@
 import { ReferenceEntry } from 'ts-morph'
-import { ActionRule } from '../core/action-reference-rule'
+import { ActionResolver } from '../core/action-reference-resolver'
 import { ActionUsageInfo } from '../core/action-usage-info'
 import { getCaller } from '../utils/ts-morph'
 
-export class EffectProcessingRule implements ActionRule {
+export class ReducerProcessingResolver implements ActionResolver {
   canExecute(actionReference: ReferenceEntry): boolean {
     const caller = getCaller(actionReference.getNode())
-    return !caller ? false : caller.getText().includes('ofType(')
+    return !caller ? false : caller.getText().includes('on(')
   }
   execute(actionReference: ReferenceEntry): ActionUsageInfo {
     return {
-      declaredName: actionReference.getNode().getText(),
       filePath: actionReference.getSourceFile().getFilePath()
     }
   }

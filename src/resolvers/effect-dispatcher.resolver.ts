@@ -1,9 +1,9 @@
 import { ReferenceEntry, SyntaxKind } from 'ts-morph'
-import { ActionRule } from '../core/action-reference-rule'
+import { ActionResolver } from '../core/action-reference-resolver'
 import { ActionUsageInfo } from '../core/action-usage-info'
 import { extractActionType } from '../utils/ngrx'
 
-export class EffectDispatcherRule implements ActionRule {
+export class EffectDispatcherRule implements ActionResolver {
   canExecute(actionReference: ReferenceEntry): boolean {
     const caller = actionReference
       .getNode()
@@ -19,7 +19,6 @@ export class EffectDispatcherRule implements ActionRule {
 
   execute(actionReference: ReferenceEntry): ActionUsageInfo {
     return {
-      declaredName: actionReference.getNode().getText(),
       filePath: actionReference.getSourceFile().getFilePath()
     }
   }

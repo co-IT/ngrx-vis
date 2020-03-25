@@ -2,7 +2,7 @@
 
 ## Next steps
 
-- [ ] read actions being dispatcht by an effect
+- [x] read actions being dispatched by an effect
 - [ ] draw first graph based on the given data
 - [ ] plan simple web-ui
 

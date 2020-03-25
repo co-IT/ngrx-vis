@@ -1,7 +1,6 @@
-import { ActionRule } from './action-reference-rule'
+import { ActionResolver } from './action-reference-resolver'
 
 export interface ActionRuleRunnerConfiguration {
-  dispatchers: ActionRule[]
-  reducers: ActionRule[]
-  effects: ActionRule[]
+  dispatchers: ActionResolver[]
+  handlers: ActionResolver[]
 }
