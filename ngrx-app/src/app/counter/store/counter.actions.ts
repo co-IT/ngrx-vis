@@ -5,9 +5,7 @@ export const add = createAction(
   props<{ payload: { value: number } }>()
 );
 
-export const randomAdd = createAction(
-  '[Counter] Add random value'
-);
+export const randomAdd = createAction('[Counter] Add random value');
 
 export const foo = createAction(
   '[Counter] Foo value',
@@ -16,5 +14,5 @@ export const foo = createAction(
 
 export const substract = createAction(
   '[Counter] Substract value',
-  (value = 0) => ({ payload: { value } })
+  (value: number = 0) => ({ payload: { value } })
 );

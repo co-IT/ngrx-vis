@@ -8,40 +8,18 @@ import {
   VariableDeclaration
 } from 'ts-morph'
 
-function identifyActionReferencePurpose(
-  actionReference: ReferenceEntry
-): null | object {
-  let result = null
-  const storeDispatchContext = new StoreDispatchContext()
-  const effectContext = new EffectContext()
-  const effectDispatchContext = new EffectDispatchContext()
-  const actionReducerContext = new ReducerContext()
+function identifyReferences(declaration: VariableDeclaration): any {
+  const parser = new ActionContextParser({
+    dispatchers: [new StoreDispatchContext(), new EffectDispatchContext()],
+    reducers: [new ReducerContext()],
+    effects: [new EffectContext()]
+  })
 
-  if (storeDispatchContext.isMatch(actionReference)) {
-    result = storeDispatchContext.getInfo(actionReference)
-  }
-  if (effectContext.isMatch(actionReference)) {
-    result = effectContext.getInfo(actionReference)
-  }
-  if (actionReducerContext.isMatch(actionReference)) {
-    result = actionReducerContext.getInfo(actionReference)
-  }
-
-  if (effectDispatchContext.isMatch(actionReference)) {
-    result = effectDispatchContext.getInfo(actionReference)
-  }
-
-  return result
-}
-
-function identifyReferences(declaration: VariableDeclaration): any[] {
-  return declaration
+  const references = declaration
     .findReferences()
-    .flatMap(referenceSymbol =>
-      referenceSymbol
-        .getReferences()
-        .map(reference => identifyActionReferencePurpose(reference))
-    )
+    .flatMap(referenceSymbol => referenceSymbol.getReferences())
+
+  return parser.run(references)
 }
 
 export function findActions(file: SourceFile): object {
@@ -51,8 +29,9 @@ export function findActions(file: SourceFile): object {
     .map(declaration => ({
       filePath: file.getFilePath(),
       declaredName: declaration.getName(),
-      actionType: declaration.getType().getText(),
-      references: identifyReferences(declaration)
+      actionType: extractNgRxActionType(declaration),
+      actionPayloadType: extractNgRxActionPayload(declaration),
+      ...identifyReferences(declaration)
     }))
 }
 
@@ -68,14 +47,72 @@ interface ActionUsageIdentificationRules {
 }
 
 class ActionContextParser {
-  rules: ActionUsageIdentificationRules
+  private rulePipeline: {
+    type: 'dispatchers' | 'reducers' | 'effects'
+    rule: ActionUsageContext
+  }[]
 
   constructor(usageIdentificationRules: ActionUsageIdentificationRules) {
-    this.rules = usageIdentificationRules
+    this.rulePipeline = [
+      ...usageIdentificationRules.dispatchers.map(rule => ({
+        type: 'dispatchers' as const,
+        rule
+      })),
+      ...usageIdentificationRules.reducers.map(rule => ({
+        type: 'reducers' as const,
+        rule
+      })),
+      ...usageIdentificationRules.effects.map(rule => ({
+        type: 'effects' as const,
+        rule
+      }))
+    ]
   }
 
-  run() {
-    const usages = { dispatchers: new Set() }
+  run(
+    actionReferences: ReferenceEntry[]
+  ): {
+    dispatchers: ActionUsageInfo[]
+    effects: ActionUsageInfo[]
+    reducers: ActionUsageInfo[]
+  } {
+    return actionReferences.reduce(
+      (result, actionReference) => {
+        const usageInfo = this.runSingle(actionReference)
+        return !usageInfo
+          ? result
+          : {
+              ...result,
+              [usageInfo.type]: [
+                ...result[usageInfo.type],
+                usageInfo.actionUsageInfo
+              ]
+            }
+      },
+      {
+        dispatchers: [],
+        effects: [],
+        reducers: []
+      }
+    )
+  }
+
+  runSingle(
+    actionReference: ReferenceEntry
+  ): {
+    type: 'dispatchers' | 'reducers' | 'effects'
+    actionUsageInfo: ActionUsageInfo
+  } | null {
+    for (let rule of this.rulePipeline) {
+      if (rule.rule.isMatch(actionReference)) {
+        return {
+          type: rule.type,
+          actionUsageInfo: rule.rule.getInfo(actionReference)
+        }
+      }
+    }
+
+    return null
   }
 }
 
@@ -138,15 +175,12 @@ class EffectDispatchContext implements ActionUsageContext {
       .getNode()
       .getFirstAncestorByKind(SyntaxKind.PropertyDeclaration)
 
-    // console.log(extractNgRxActionType(actionReference))
-    // console.log('Effect property', caller?.getType().getText())
-
     return !caller
       ? false
       : caller
           ?.getType()
           .getText()
-          .includes(extractNgRxActionType(actionReference))
+          .includes(extractNgRxActionType(actionReference.getNode()))
   }
 
   getInfo(actionReference: ReferenceEntry): ActionUsageInfo {
@@ -157,11 +191,8 @@ class EffectDispatchContext implements ActionUsageContext {
   }
 }
 
-function extractNgRxActionType(actionReference: ReferenceEntry): string {
-  const fullQualifiedImport = actionReference
-    .getNode()
-    .getType()
-    .getText()
+function extractNgRxActionType(actionReference: Node<ts.Node>): string {
+  const fullQualifiedImport = actionReference.getType().getText()
 
   const [, typedAction] =
     /.+(TypedAction<".+">).+/.exec(fullQualifiedImport) || []
@@ -169,7 +200,22 @@ function extractNgRxActionType(actionReference: ReferenceEntry): string {
   return typedAction
 }
 
-function isNgRxTypedAction(declaration: VariableDeclaration): boolean {
+function extractNgRxActionPayload(
+  actionReference: Node<ts.Node>
+): string | null {
+  const fullQualifiedImport = actionReference.getType().getText()
+
+  const [, payloadDefinedByProps] =
+    /.+\(props: ({.+})\).+/.exec(fullQualifiedImport) || []
+
+  const [, payloadDefinedByFunctionWithParameters] =
+    /.+FunctionWithParametersType<\[.+\], ({.+}).+/.exec(fullQualifiedImport) ||
+    []
+
+  return payloadDefinedByProps || payloadDefinedByFunctionWithParameters || null
+}
+
+function isNgRxTypedAction(declaration: Node<ts.Node>): boolean {
   return declaration
     .getType()
     .getText()
