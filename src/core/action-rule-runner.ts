@@ -1,6 +1,6 @@
 import { ReferenceEntry } from 'ts-morph'
 import { ActionRule } from './action-reference-rule'
-import { ActionUsageIdentificationRules } from './action-usage-identification-rules'
+import { ActionRuleRunnerConfiguration } from './action-rule-runner-configuration'
 import { ActionUsageInfo } from './action-usage-info'
 
 export interface ActionReferenceMap {
@@ -17,7 +17,7 @@ export class ActionRuleRunner {
     rule: ActionRule
   }[]
 
-  constructor(usageIdentificationRules: ActionUsageIdentificationRules) {
+  constructor(configuration: ActionRuleRunnerConfiguration) {
     this.emptyReferenceMap = {
       dispatchers: [],
       effects: [],
@@ -25,15 +25,15 @@ export class ActionRuleRunner {
     }
 
     this.rulePipeline = [
-      ...usageIdentificationRules.dispatchers.map(rule => ({
+      ...configuration.dispatchers.map(rule => ({
         type: 'dispatchers' as const,
         rule
       })),
-      ...usageIdentificationRules.reducers.map(rule => ({
+      ...configuration.reducers.map(rule => ({
         type: 'reducers' as const,
         rule
       })),
-      ...usageIdentificationRules.effects.map(rule => ({
+      ...configuration.effects.map(rule => ({
         type: 'effects' as const,
         rule
       }))
