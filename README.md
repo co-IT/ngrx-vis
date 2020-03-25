@@ -1,5 +1,11 @@
 # ngrx-graph
 
+## Next steps
+
+- [ ] read actions being dispatcht by an effect
+- [ ] draw first graph based on the given data
+- [ ] plan simple web-ui
+
 ## Vision
 
 We want to create a Tool that provides a beautiful graph displaying the journey of each action.
