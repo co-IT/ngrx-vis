@@ -18,24 +18,16 @@ function identifyActionReferencePurpose(
   const actionReducerContext = new ReducerContext()
 
   if (storeDispatchContext.isMatch(actionReference)) {
-    // console.log('Store Dispatch', actionStoreContext.getInfo(actionReference))
     result = storeDispatchContext.getInfo(actionReference)
   }
   if (effectContext.isMatch(actionReference)) {
-    // console.log('Effect', actionEffectContext.getInfo(actionReference))
     result = effectContext.getInfo(actionReference)
   }
   if (actionReducerContext.isMatch(actionReference)) {
-    // console.log('Reducer', actionReducerContext.getInfo(actionReference))
     result = actionReducerContext.getInfo(actionReference)
   }
 
   if (effectDispatchContext.isMatch(actionReference)) {
-    console.log(
-      'Effect Dispatch',
-      effectDispatchContext.getInfo(actionReference)
-    )
-
     result = effectDispatchContext.getInfo(actionReference)
   }
 
