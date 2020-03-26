@@ -1,4 +1,4 @@
-# ngrx-graph
+# NgRx Vis
 
 ## Next steps
 

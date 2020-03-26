@@ -1,4 +1,5 @@
 {
+  "name": "ngrx-vis",
   "scripts": {
     "lint": "eslint . --ext .ts",
     "lint-and-fix": "eslint . --ext .ts --fix",
