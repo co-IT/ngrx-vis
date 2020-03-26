@@ -35,13 +35,8 @@ Both using the same Type-System but provide the action creators in different way
 
 ### How do we build a dependency tree between Actions, Effects and Reducers?
 
-We need to organize all data in a graph.
-
-#### Libraries
-
-- [Mermaid](https://mermaid-js.github.io/mermaid/#/)
-- [Vis.js](https://visjs.org/)
-- [D3](https://observablehq.com/@d3/tidy-tree)
+We build the graph with [Vis.js](https://visjs.org/).
+A first example can be found [here](https://jsfiddle.net/GregOnNet/vpa3mzyk/38/).
 
 ### What information should the graph display?
 
