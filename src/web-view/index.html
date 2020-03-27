@@ -5,10 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>NgRx - Viz</title>
     <style>
-      #ngrx-action-network,
-      html,
-      body {
-        height: 100%;
+      #ngrx-action-network {
+        height: 800px;
       }
     </style>
   </head>
@@ -21,7 +19,11 @@
         const networkEdges = JSON.parse('/* __NETWORK_EDGES__ */')
         const networkOptions = {
           nodes: {
-            shape: 'dot'
+            shape: 'dot',
+            scaling: {
+              min: 32,
+              max: 64
+            }
           },
           edges: {
             smooth: {
@@ -60,8 +62,7 @@
               color: '#FC9B2E',
               size: 5
             }
-          },
-          physics: false
+          }
         }
 
         const networkHost = document.getElementById('ngrx-action-network')

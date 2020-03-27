@@ -1,6 +1,5 @@
 import { promises as fs } from 'fs'
 import { Project, SourceFile, VariableDeclaration } from 'ts-morph'
-import { inspect } from 'util'
 import {
   ActionReferenceMap,
   ActionResolverRunner
@@ -79,8 +78,6 @@ function createEmptyVisJsDataSet(): VisJsDataSet {
 }
 
 function toVisJsNetwork(actionContexts: ActionContext[]): VisJsDataSet {
-  console.log(inspect(actionContexts, false, 6))
-
   return actionContexts.reduce((dataSet, actionContext) => {
     const actionNode = createVisJsNode(
       createId(),
@@ -115,14 +112,26 @@ function toVisJsNetwork(actionContexts: ActionContext[]): VisJsDataSet {
       )
 
       if (actionHandler.followUpActions) {
+        const followUpDispatchNode = createVisJsNode(
+          createId(),
+          'dispatches',
+          4,
+          'dispatch'
+        )
+        actionHandlerToFollowUpActionEdges.push(
+          createVisJsEdge(actionHandlerNode, followUpDispatchNode)
+        )
         const effectFollowUpActionNodes = actionHandler.followUpActions.map(
           followUpAction =>
-            createVisJsNode(createId(), followUpAction, 4, 'action')
+            createVisJsNode(createId(), followUpAction, 5, 'action')
         )
-        followUpActionNodes.push(...effectFollowUpActionNodes)
+        followUpActionNodes.push(
+          followUpDispatchNode,
+          ...effectFollowUpActionNodes
+        )
         actionHandlerToFollowUpActionEdges.push(
           ...effectFollowUpActionNodes.map(effectFollowUpActionNode =>
-            createVisJsEdge(actionHandlerNode, effectFollowUpActionNode)
+            createVisJsEdge(followUpDispatchNode, effectFollowUpActionNode)
           )
         )
       }
@@ -191,7 +200,9 @@ function createId(): string {
   )
 }
 
-const project = new Project({ tsConfigFilePath: `./ngrx-app/tsconfig.json` })
+const project = new Project({
+  tsConfigFilePath: `./ngrx-example-app/tsconfig.json`
+})
 const files = project.getSourceFiles('**/*.actions.ts')
 const actionContexts = files.flatMap(file => findActions(file))
 const dataSet = toVisJsNetwork(actionContexts)
