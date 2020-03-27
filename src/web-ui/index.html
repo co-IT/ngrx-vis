@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>NgRx - Viz</title>
+  </head>
+  <body>
+    <div id="ngrx-action-network"></div>
+    <script src="https://visjs.github.io/vis-network/standalone/umd/vis-network.min.js"></script>
+    <script type="text/javascript">
+      ;(() => {
+        const networkNodes = {
+          /* __NETWORK_NOTES__ */
+        }
+
+        const networkEdges = {
+          /* __NETWORK_EDGES__ */
+        }
+
+        const networkOptions = {
+          nodes: {
+            shape: 'dot'
+          },
+          edges: {
+            smooth: {
+              type: 'cubicBezier',
+              roundness: 0.4
+            }
+          },
+          layout: {
+            hierarchical: {
+              direction: 'LR'
+            }
+          },
+          groups: {
+            action: {
+              shape: 'diamond',
+              size: 8,
+              color: '#A82AC4'
+            },
+            component: {
+              shape: 'square',
+              color: '#DE7FA3',
+              font: {
+                multi: 'md'
+              },
+              size: 10
+            },
+            reducer: {
+              color: '#5B2AC4'
+            },
+            effect: {
+              color: '#2AC4A8'
+            },
+            dispatch: {
+              color: '#FC9B2E'
+            }
+          },
+          physics: false
+        }
+
+        const networkHost = document.getElementById('ngrx-action-network')
+
+        const network = new vis.Network(
+          networkContainer,
+          { nodes: networkNodes, edges: networkEdges },
+          networkOptions
+        )
+      })()
+    </script>
+  </body>
+</html>
