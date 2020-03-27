@@ -6,6 +6,7 @@
 ## Angular ##
 # compiled output
 dist/
+ngrx-vis/
 tmp/
 app/**/*.js
 app/**/*.js.map

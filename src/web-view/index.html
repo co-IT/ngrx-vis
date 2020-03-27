@@ -4,20 +4,21 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>NgRx - Viz</title>
+    <style>
+      #ngrx-action-network,
+      html,
+      body {
+        height: 100%;
+      }
+    </style>
   </head>
   <body>
     <div id="ngrx-action-network"></div>
     <script src="https://visjs.github.io/vis-network/standalone/umd/vis-network.min.js"></script>
     <script type="text/javascript">
       ;(() => {
-        const networkNodes = {
-          /* __NETWORK_NOTES__ */
-        }
-
-        const networkEdges = {
-          /* __NETWORK_EDGES__ */
-        }
-
+        const networkNodes = JSON.parse('/* __NETWORK_NODES__ */')
+        const networkEdges = JSON.parse('/* __NETWORK_EDGES__ */')
         const networkOptions = {
           nodes: {
             shape: 'dot'
@@ -36,7 +37,7 @@
           groups: {
             action: {
               shape: 'diamond',
-              size: 8,
+              size: 5,
               color: '#A82AC4'
             },
             component: {
@@ -51,10 +52,13 @@
               color: '#5B2AC4'
             },
             effect: {
-              color: '#2AC4A8'
+              color: '#2AC4A8',
+              shape: 'square',
+              size: 10
             },
             dispatch: {
-              color: '#FC9B2E'
+              color: '#FC9B2E',
+              size: 5
             }
           },
           physics: false
@@ -63,7 +67,7 @@
         const networkHost = document.getElementById('ngrx-action-network')
 
         const network = new vis.Network(
-          networkContainer,
+          networkHost,
           { nodes: networkNodes, edges: networkEdges },
           networkOptions
         )
