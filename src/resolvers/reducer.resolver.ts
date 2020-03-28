@@ -1,3 +1,4 @@
+import { basename } from 'path'
 import { ReferenceEntry } from 'ts-morph'
 import { ActionResolver } from '../core/action-reference-resolver'
 import { ActionUsageInfo } from '../core/action-usage-info'
@@ -10,6 +11,7 @@ export class ReducerProcessingResolver implements ActionResolver {
   }
   execute(actionReference: ReferenceEntry): ActionUsageInfo {
     return {
+      fileName: basename(actionReference.getSourceFile().getFilePath()),
       filePath: actionReference.getSourceFile().getFilePath()
     }
   }

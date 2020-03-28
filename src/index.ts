@@ -82,7 +82,7 @@ function toVisJsNetwork(actionContexts: ActionContext[]): VisJsDataSet {
     const actionNode = createVisJsNode(actionContext.actionType, 0, 'action')
 
     const dispatcherNodes = actionContext.dispatchers.map(actionDispatcher =>
-      createVisJsNode(actionDispatcher.filePath, 1, 'component')
+      createVisJsNode(actionDispatcher.fileName, 1, 'component')
     )
 
     const actionNodeToDispatcherNodesEdges = dispatcherNodes.map(
@@ -100,7 +100,7 @@ function toVisJsNetwork(actionContexts: ActionContext[]): VisJsDataSet {
 
     const handlerNodes = actionContext.handlers.map(actionHandler => {
       const actionHandlerNode = createVisJsNode(
-        actionHandler.filePath,
+        actionHandler.fileName,
         3,
         'effect'
       )

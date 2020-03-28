@@ -6,6 +6,8 @@
     <title>NgRx - Viz</title>
     <style>
       .ngrx-action-canvas {
+        flex: 1;
+        border: 1px solid #ddd;
         height: 800px;
       }
     </style>
@@ -39,7 +41,7 @@
                 </option>
               </select>
 
-              <div ref="canvas" class="ngrx-action-canvas"></div>
+                <div ref="canvas" class="ngrx-action-canvas"></div>
             </div>
           `,
           data() {
@@ -76,7 +78,7 @@
               this.options
             )
 
-            this.visJsNetwork.once('afterDrawing', () => {
+            this.visJsNetwork.once('beforeDrawing', () => {
               this.visJsNetwork.focus(this.firstNode.id, {
                 scale: 0.7,
                 offset: { x: -150, y: -250 }
