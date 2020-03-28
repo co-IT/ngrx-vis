@@ -79,22 +79,17 @@ function createEmptyVisJsDataSet(): VisJsDataSet {
 
 function toVisJsNetwork(actionContexts: ActionContext[]): VisJsDataSet {
   return actionContexts.reduce((dataSet, actionContext) => {
-    const actionNode = createVisJsNode(
-      createId(),
-      actionContext.actionType,
-      0,
-      'action'
-    )
+    const actionNode = createVisJsNode(actionContext.actionType, 0, 'action')
 
     const dispatcherNodes = actionContext.dispatchers.map(actionDispatcher =>
-      createVisJsNode(createId(), actionDispatcher.filePath, 1, 'component')
+      createVisJsNode(actionDispatcher.filePath, 1, 'component')
     )
 
     const actionNodeToDispatcherNodesEdges = dispatcherNodes.map(
       dispatcherNode => createVisJsEdge(actionNode, dispatcherNode)
     )
 
-    const dispatchNode = createVisJsNode(createId(), 'triggers', 2, 'dispatch')
+    const dispatchNode = createVisJsNode('triggers', 2, 'dispatch')
 
     const dispatcherNodesToDispatchNodeEdges = dispatcherNodes.map(
       dispatcherNode => createVisJsEdge(dispatcherNode, dispatchNode)
@@ -105,7 +100,6 @@ function toVisJsNetwork(actionContexts: ActionContext[]): VisJsDataSet {
 
     const handlerNodes = actionContext.handlers.map(actionHandler => {
       const actionHandlerNode = createVisJsNode(
-        createId(),
         actionHandler.filePath,
         3,
         'effect'
@@ -113,7 +107,6 @@ function toVisJsNetwork(actionContexts: ActionContext[]): VisJsDataSet {
 
       if (actionHandler.followUpActions) {
         const followUpDispatchNode = createVisJsNode(
-          createId(),
           'dispatches',
           4,
           'dispatch'
@@ -122,8 +115,7 @@ function toVisJsNetwork(actionContexts: ActionContext[]): VisJsDataSet {
           createVisJsEdge(actionHandlerNode, followUpDispatchNode)
         )
         const effectFollowUpActionNodes = actionHandler.followUpActions.map(
-          followUpAction =>
-            createVisJsNode(createId(), followUpAction, 5, 'action')
+          followUpAction => createVisJsNode(followUpAction, 5, 'action')
         )
         followUpActionNodes.push(
           followUpDispatchNode,
@@ -176,12 +168,11 @@ function createWebView(dataSet: VisJsDataSet) {
 }
 
 function createVisJsNode(
-  id: VisJsNodeId,
   label: string,
   level: number,
   group: string
 ): VisJsNode {
-  return { id, label, level, group }
+  return { id: createVisJsNodeId(), label, level, group }
 }
 
 function createVisJsEdge(from: VisJsNode, to: VisJsNode): VisJsEdge {
@@ -192,7 +183,7 @@ function createVisJsEdge(from: VisJsNode, to: VisJsNode): VisJsEdge {
   }
 }
 
-function createId(): string {
+function createVisJsNodeId(): VisJsNodeId {
   return (
     Math.random()
       .toString(36)

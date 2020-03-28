@@ -14,7 +14,6 @@ export class EffectDispatcherRule implements ActionResolver {
       : caller
           ?.getType()
           .getText()
-          .replace(/"/g, '')
           .includes(extractActionType(actionReference.getNode()))
   }
 
