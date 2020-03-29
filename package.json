@@ -1,6 +1,7 @@
 {
   "name": "ngrx-vis",
   "scripts": {
+    "build": "tsc",
     "lint": "eslint . --ext .ts",
     "lint-and-fix": "eslint . --ext .ts --fix",
     "prettier-format": "prettier --config .prettierrc 'src/**/*.ts' --write",
