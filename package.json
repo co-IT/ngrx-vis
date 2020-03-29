@@ -1,13 +1,17 @@
 {
   "name": "ngrx-vis",
   "version": "0.1.0",
+  "bin": {
+    "ngrx-vis": "./index.js"
+  },
   "scripts": {
-    "build": "tsc",
+    "build": "tsc && cp ./package.json ./README.md ./dist/ && chmod +x dist/index.js",
     "lint": "eslint . --ext .ts",
     "lint-and-fix": "eslint . --ext .ts --fix",
     "prettier-format": "prettier --config .prettierrc 'src/**/*.ts' --write",
     "start": "ts-node ./src/index.ts",
-    "start:watch": "nodemon"
+    "start:watch": "nodemon",
+    "ngrx-vis": "ngrx-vis"
   },
   "dependencies": {
     "@types/commander": "^2.12.2",

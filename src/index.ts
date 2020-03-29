@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 import { Command } from 'commander'
 import { NgRxActionInspector } from './core/ngrx-action-inspector'
 import { createNetwork } from './vis-js/create-network'
@@ -17,10 +19,9 @@ program.on('--help', () => {
 
 program.parse(process.argv)
 
-// eslint-disable-next-line no-console
-console.log(program.project)
-
 const inspector = new NgRxActionInspector(program.project)
 const network = createNetwork(inspector.inspect())
 
-createWebView(network).catch(err => console.log(err))
+createWebView(network)
+  .then(() => console.log('✅ Graph created successfully'))
+  .catch(err => console.log(err))
