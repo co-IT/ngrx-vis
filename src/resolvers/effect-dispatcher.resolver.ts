@@ -10,8 +10,6 @@ export class EffectDispatcherRule implements ActionResolver {
       .getNode()
       .getFirstAncestorByKind(SyntaxKind.PropertyDeclaration)
 
-    console.log(effectDeclaration?.getText())
-
     return !effectDeclaration || this.isDispatchDisabled(effectDeclaration)
       ? false
       : effectDeclaration
