@@ -7,7 +7,7 @@ import { createWebView } from './web-view/create-web-view'
 
 const program = new Command()
 
-program.version('0.1.7')
+program.version('0.1.8')
 program.requiredOption('-p, --project <path>', 'Specify path to tsconfig')
 
 program.on('--help', () => {
