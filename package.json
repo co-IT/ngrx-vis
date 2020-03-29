@@ -1,5 +1,6 @@
 {
   "name": "ngrx-vis",
+  "version": "0.1.0",
   "scripts": {
     "build": "tsc",
     "lint": "eslint . --ext .ts",
@@ -9,6 +10,7 @@
     "start:watch": "nodemon"
   },
   "dependencies": {
+    "@types/commander": "^2.12.2",
     "fs-extra": "^9.0.0",
     "ts-morph": "7.0.0",
     "typescript": "3.8.3"

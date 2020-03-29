@@ -1,9 +1,26 @@
+import { Command } from 'commander'
 import { NgRxActionInspector } from './core/ngrx-action-inspector'
 import { createNetwork } from './vis-js/create-network'
 import { createWebView } from './web-view/create-web-view'
 
-const inspector = new NgRxActionInspector('./ngrx-example-app/tsconfig.json')
-const network = createNetwork(inspector.inspect())
+const version = require('../package.json')
+const program = new Command()
+
+program.version(version)
+program.requiredOption('-p, --project <path>', 'Specify path to tsconfig')
+
+program.on('--help', () => {
+  console.log('')
+  console.log('Example call:')
+  console.log('  $ ngrx-vis --project ./src/tsconfig.app.json')
+})
+
+program.parse(process.argv)
 
 // eslint-disable-next-line no-console
+console.log(program.project)
+
+const inspector = new NgRxActionInspector(program.project)
+const network = createNetwork(inspector.inspect())
+
 createWebView(network).catch(err => console.log(err))
