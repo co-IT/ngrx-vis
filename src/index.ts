@@ -5,10 +5,9 @@ import { NgRxActionInspector } from './core/ngrx-action-inspector'
 import { createNetwork } from './vis-js/create-network'
 import { createWebView } from './web-view/create-web-view'
 
-const version = require('../package.json')
 const program = new Command()
 
-program.version(version)
+program.version('0.1.1')
 program.requiredOption('-p, --project <path>', 'Specify path to tsconfig')
 
 program.on('--help', () => {
