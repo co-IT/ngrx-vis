@@ -20,32 +20,31 @@ export class ActionResolverRunner {
 
   run(actionReferences: ReferenceEntry[]): ActionReferenceMap {
     return actionReferences.reduce((result, actionReference) => {
-      const resolver = this.findRule(actionReference)
+      const resolvers = this.findRules(actionReference)
 
-      return !resolver
-        ? result
-        : {
-            ...result,
-            [resolver.type]: [
-              ...result[resolver.type],
-              resolver.rule.execute(actionReference)
-            ]
-          }
+      resolvers.forEach(resolver => {
+        result = {
+          ...result,
+          [resolver.type]: [
+            ...result[resolver.type],
+            resolver.rule.execute(actionReference)
+          ]
+        }
+      })
+
+      return result
     }, this.createEmptyReferenceMap())
   }
 
-  findRule(
+  findRules(
     actionReference: ReferenceEntry
   ): {
     type: 'dispatchers' | 'handlers'
     rule: ActionResolver
-  } | null {
-    for (let { rule, type } of this.resolverPipeline) {
-      if (rule.canExecute(actionReference)) {
-        return { rule, type }
-      }
-    }
-    return null
+  }[] {
+    return this.resolverPipeline.filter(resolver =>
+      resolver.rule.canExecute(actionReference)
+    )
   }
 
   private flattenResolvers(

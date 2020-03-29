@@ -10,6 +10,7 @@ export class StoreDispatcherResolver implements ActionResolver {
     const actionDispatchCall = actionCreatorCall
       ? getCaller(actionCreatorCall)
       : null
+
     return !actionDispatchCall
       ? false
       : actionDispatchCall.getText().includes('.dispatch(')

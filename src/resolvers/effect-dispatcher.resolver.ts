@@ -2,7 +2,7 @@ import { basename } from 'path'
 import { PropertyDeclaration, ReferenceEntry, SyntaxKind } from 'ts-morph'
 import { ActionResolver } from '../core/action-reference-resolver'
 import { ActionUsageInfo } from '../core/action-usage-info'
-import { extractActionType } from '../utils/ngrx'
+import { extractActionType, extractAllActionTypes } from '../utils/ngrx'
 
 export class EffectDispatcherRule implements ActionResolver {
   canExecute(actionReference: ReferenceEntry): boolean {
@@ -12,10 +12,10 @@ export class EffectDispatcherRule implements ActionResolver {
 
     return !effectDeclaration || this.isDispatchDisabled(effectDeclaration)
       ? false
-      : effectDeclaration
-          ?.getType()
-          .getText()
-          .includes(extractActionType(actionReference.getNode()))
+      : extractAllActionTypes(effectDeclaration).some(
+          actionType =>
+            actionType === extractActionType(actionReference.getNode())
+        )
   }
 
   execute(actionReference: ReferenceEntry): ActionUsageInfo {
