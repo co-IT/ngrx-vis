@@ -1,4 +1,4 @@
-import { promises as fs } from 'fs'
+import { copySync, readFileSync, writeFileSync } from 'fs-extra'
 import { Project, SourceFile, VariableDeclaration } from 'ts-morph'
 import {
   ActionReferenceMap,
@@ -155,16 +155,17 @@ function toVisJsNetwork(actionContexts: ActionContext[]): VisJsDataSet {
   }, createEmptyVisJsDataSet())
 }
 function createWebView(dataSet: VisJsDataSet) {
-  fs.copyFile('./src/web-view/index.html', './ngrx-vis/index.html')
-    .then(() => fs.readFile('./ngrx-vis/index.html', { encoding: 'utf-8' }))
-    .then(indexHtml =>
-      indexHtml
-        .replace('/* __NETWORK_NODES__ */', JSON.stringify(dataSet.nodes))
-        .replace('/* __NETWORK_EDGES__ */', JSON.stringify(dataSet.edges))
-    )
-    .then(filledIndexHtml =>
-      fs.writeFile('./ngrx-vis/index.html', filledIndexHtml)
-    )
+  copySync('./src/web-view/', './ngrx-vis/')
+
+  const graphJsFile = readFileSync('./ngrx-vis/src/network-graph.js', {
+    encoding: 'utf-8'
+  })
+
+  const filledGraphJsFile = graphJsFile
+    .replace('/* __NETWORK_NODES__ */', JSON.stringify(dataSet.nodes))
+    .replace('/* __NETWORK_EDGES__ */', JSON.stringify(dataSet.edges))
+
+  writeFileSync('./ngrx-vis/src/network-graph.js', filledGraphJsFile)
 }
 
 function createVisJsNode(

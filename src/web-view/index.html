@@ -5,10 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>NgRx - Viz</title>
     <style>
+      body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      }
+
+      .network-graph {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+      }
+
       .ngrx-action-canvas {
-        flex: 1;
-        border: 1px solid #ddd;
-        height: 800px;
+        width: 900px;
+        height: 850px;
+        border: 1px solid #dddddd;
       }
     </style>
   </head>
@@ -22,145 +33,6 @@
     </div>
     <script src="https://cdn.jsdelivr.net/npm/vue"></script>
     <script src="https://visjs.github.io/vis-network/standalone/umd/vis-network.min.js"></script>
-    <script type="text/javascript">
-      ;(() => {
-        Vue.filter('byNodeGroup', function(nodes, groupName) {})
-
-        Vue.component('action-network-graphs', {
-          template: `
-            <div>
-              <select
-                v-model="actionNodeSelected"
-                @change="focusSelectedNode()"
-              >
-                <option
-                  v-for="node in actionNodes"
-                  :value="node"
-                >
-                  {{ node.label }}
-                </option>
-              </select>
-
-                <div ref="canvas" class="ngrx-action-canvas"></div>
-            </div>
-          `,
-          data() {
-            return {
-              actionNodeSelected: null,
-              visJsNetwork: null
-            }
-          },
-          computed: {
-            firstNode() {
-              return this.nodes[0]
-            },
-            actionNodes() {
-              if (!Array.isArray(this.nodes)) {
-                return []
-              }
-
-              return this.nodes.filter(node => node.group === 'action')
-            }
-          },
-          props: ['nodes', 'edges', 'options'],
-          methods: {
-            focusSelectedNode() {
-              this.visJsNetwork.focus(this.actionNodeSelected.id, {
-                scale: 0.7,
-                offset: { x: -150, y: -250 }
-              })
-            }
-          },
-          mounted() {
-            this.visJsNetwork = new vis.Network(
-              this.$refs.canvas,
-              { nodes: this.nodes, edges: this.edges },
-              this.options
-            )
-
-            this.visJsNetwork.once('beforeDrawing', () => {
-              this.visJsNetwork.focus(this.firstNode.id, {
-                scale: 0.7,
-                offset: { x: -150, y: -250 }
-              })
-
-              this.actionNodeSelected = this.firstNode
-            })
-          }
-        })
-
-        const app = new Vue({
-          el: '#ngrx-vis',
-          data: {
-            networkNodes: JSON.parse('/* __NETWORK_NODES__ */'),
-            networkEdges: JSON.parse('/* __NETWORK_EDGES__ */'),
-            networkOptions: {
-              nodes: {
-                shape: 'dot',
-                scaling: {
-                  min: 32,
-                  max: 64
-                }
-              },
-              edges: {
-                smooth: {
-                  type: 'cubicBezier',
-                  roundness: 0.4
-                }
-              },
-              layout: {
-                hierarchical: {
-                  direction: 'LR'
-                }
-              },
-              groups: {
-                action: {
-                  shape: 'diamond',
-                  size: 5,
-                  color: '#A82AC4'
-                },
-                component: {
-                  shape: 'square',
-                  color: '#DE7FA3',
-                  font: {
-                    multi: 'md'
-                  },
-                  size: 10
-                },
-                reducer: {
-                  color: '#5B2AC4'
-                },
-                effect: {
-                  color: '#2AC4A8',
-                  shape: 'square',
-                  size: 10
-                },
-                dispatch: {
-                  color: '#FC9B2E',
-                  size: 5
-                }
-              }
-            }
-          }
-        })
-      })()
-    </script>
+    <script src="./src/network-graph.js"></script>
   </body>
 </html>
-
-<!--
-  network.once('afterDrawing', () =>
-          network.focus('ln8dtwpwy8qk8btn9ih', {
-            scale: 0.7,
-            offset: { x: -150, y: -250 }
-          })
-        )
-
-        const moveToBottomBtn = document.getElementById('test')
-        moveToBottomBtn.addEventListener('click', () =>
-          network.focus('spvcludvbjk8btn9ii', {
-            scale: 0.7,
-            offset: { x: -150, y: -250 }
-          })
-        )
--->
