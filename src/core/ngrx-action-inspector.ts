@@ -1,17 +1,17 @@
 import { Project, SourceFile, VariableDeclaration } from 'ts-morph'
-import { ActionContext } from './action-context'
-import {
-  extractActionPayload,
-  extractActionType,
-  isTypedAction
-} from '../utils/ngrx'
-import { ActionReferenceMap, ActionResolverRunner } from './action-rule-runner'
 import {
   EffectDispatcherRule,
   EffectProcessingResolver,
   ReducerProcessingResolver,
   StoreDispatcherResolver
 } from '../resolvers'
+import {
+  extractActionPayload,
+  extractActionType,
+  isTypedAction
+} from '../utils/ngrx'
+import { ActionContext } from './action-context'
+import { ActionReferenceMap, ActionResolverRunner } from './action-rule-runner'
 
 export class NgRxActionInspector {
   constructor(
@@ -21,7 +21,7 @@ export class NgRxActionInspector {
 
   inspect(): ActionContext[] {
     const project = new Project({
-      tsConfigFilePath: `./ngrx-example-app/tsconfig.json`
+      tsConfigFilePath: this.pathToTsConfig
     })
 
     const files = project.getSourceFiles(this.actionFilesGlob)

@@ -5,6 +5,7 @@
   "extends": ["eslint:recommended", "prettier"],
   "rules": {
     "no-console": 1,
+    "no-unused-vars": 1,
     "prettier/prettier": 2
   },
   "parserOptions": {
