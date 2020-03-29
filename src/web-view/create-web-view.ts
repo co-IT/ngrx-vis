@@ -2,7 +2,7 @@ import { copy, ensureDir, readFile, writeFile } from 'fs-extra'
 
 export function createWebView(dataSet: { nodes: any[]; edges: any[] }) {
   return ensureDir('./ngrx-vis')
-    .then(() => copy('./src/web-view/template', './ngrx-vis/'))
+    .then(() => copy(`${__dirname}/template`, './ngrx-vis/'))
     .then(() =>
       readFile('./ngrx-vis/src/network-graph.js', {
         encoding: 'utf-8'
