@@ -1,7 +1,8 @@
+import { copySync, ensureDir, readFileSync, writeFileSync } from 'fs-extra'
 import { DataSet } from '../visjs'
-import { copySync, readFileSync, writeFileSync } from 'fs-extra'
 
 export function createWebView(dataSet: DataSet) {
+  ensureDir('./ngrx-vis')
   copySync('./src/web-view/template', './ngrx-vis/')
 
   const graphJsFile = readFileSync('./ngrx-vis/src/network-graph.js', {
