@@ -1,0 +1,14 @@
+<img
+  class="img-responsive center-block"
+  *ngIf="!foodItem?.imageString"
+  src="https://via.placeholder.com/320x200.png?text=Take%20a%20picture"
+  alt="imagestring"
+  (click)="takePicture($event, foodItem)"
+/>
+<img
+  class="img-responsive center-block"
+  *ngIf="foodItem?.imageString"
+  [src]="foodItem.imageString"
+  alt="imagestring"
+  (click)="takePicture($event, foodItem)"
+/>

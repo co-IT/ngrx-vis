@@ -1,0 +1,22 @@
+<!-- /.container -->
+<main role="main">
+  <div class="jumbotron">
+    <div class="container">
+      <h1 class="display-3">Your meal for today</h1>
+      <app-random-meal
+        [foodItems]="randomMeal$ | async"
+        [loading]="loading$ | async"
+      ></app-random-meal>
+      <br />
+      <p>
+        <button
+          class="btn btn-primary btn-lg"
+          (click)="updateFood()"
+          role="button"
+        >
+          Get new Meal &raquo;
+        </button>
+      </p>
+    </div>
+  </div>
+</main>

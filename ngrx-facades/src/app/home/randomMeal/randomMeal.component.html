@@ -1,0 +1,9 @@
+<div *ngIf="!loading;else otherContent">
+    <div *ngFor="let item of foodItems">
+        <app-single-meal [fooditem]="item"></app-single-meal>
+    </div>
+</div>
+
+<ng-template #otherContent>
+    <h4>Loading...</h4>
+</ng-template>
