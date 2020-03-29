@@ -5,7 +5,7 @@
     "ngrx-vis": "./index.js"
   },
   "scripts": {
-    "build": "tsc && cp ./package.json ./README.md ./dist/ && chmod +x dist/index.js",
+    "build": "tsc && cp ./package.json ./README.md ./dist/",
     "lint": "eslint . --ext .ts",
     "lint-and-fix": "eslint . --ext .ts --fix",
     "prettier-format": "prettier --config .prettierrc 'src/**/*.ts' --write",
