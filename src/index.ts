@@ -7,7 +7,13 @@ import { createWebView } from './web-view/create-web-view'
 
 const program = new Command()
 
-program.version('0.1.11')
+program.version('0.1.12')
+program.option(
+  '-g, --glob <**/*.actions.ts>',
+  'Glob for files containing actions',
+  '**/*.actions.ts'
+)
+
 program.requiredOption('-p, --project <path>', 'Specify path to tsconfig')
 
 program.on('--help', () => {
@@ -18,7 +24,7 @@ program.on('--help', () => {
 
 program.parse(process.argv)
 
-const inspector = new NgRxActionInspector(program.project)
+const inspector = new NgRxActionInspector(program.project, program.glob)
 const network = createNetwork(inspector.inspect())
 
 createWebView(network)

@@ -16,7 +16,7 @@ import { ActionReferenceMap, ActionResolverRunner } from './action-rule-runner'
 export class NgRxActionInspector {
   constructor(
     private pathToTsConfig: string,
-    private actionFilesGlob = '**/*.actions.ts'
+    private actionFilesGlob: string
   ) {}
 
   inspect(): ActionContext[] {
