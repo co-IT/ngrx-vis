@@ -1,6 +1,9 @@
 import { copy, ensureDir, readFile, writeFile } from 'fs-extra'
 
-export function createWebView(dataSet: { nodes: any[]; edges: any[] }) {
+export function createWebView(dataSet: {
+  nodes: any[]
+  edges: any[]
+}): Promise<void> {
   return ensureDir('./ngrx-vis')
     .then(() => copy(`${__dirname}/template`, './ngrx-vis/'))
     .then(() =>
