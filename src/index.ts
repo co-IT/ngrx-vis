@@ -7,7 +7,7 @@ import { createWebView } from './web-view/create-web-view'
 
 const program = new Command()
 
-program.version('0.1.12')
+program.version(process.env.npm_package_version || 'unknown')
 program.option(
   '-g, --glob <**/*.actions.ts>',
   'Glob for files containing actions',
