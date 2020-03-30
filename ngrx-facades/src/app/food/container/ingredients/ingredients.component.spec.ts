@@ -18,10 +18,10 @@ describe('IngredientsComponent', () => {
         ReactiveFormsModule,
         StoreModule.forRoot({
           ...fromReducers.reducers,
-          food: combineReducers(fromFeatureReducers.reducers),
-        }),
+          food: combineReducers(fromFeatureReducers.reducers)
+        })
       ],
-      declarations: [IngredientsComponent, IngredientListComponent],
+      declarations: [IngredientsComponent, IngredientListComponent]
     }).compileComponents();
   }));
 

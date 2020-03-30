@@ -16,7 +16,7 @@ export class MobileCameraService implements AbstractCameraService {
         saveToPhotoAlbum: false,
         targetWidth: 640,
         targetHeight: 640,
-        correctOrientation: true,
+        correctOrientation: true
       };
 
       camera.getPicture(

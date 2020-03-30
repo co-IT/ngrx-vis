@@ -34,8 +34,8 @@ export class MobileNotificationService implements AbstractNotificationService {
       position: 'bottom',
       addPixelsY: -40, // added a negative value to move it up a bit (default 0),
       styling: {
-        backgroundColor: backgroundColor, // '#FF0000' make sure you use #RRGGBB. Default #333333
-      },
+        backgroundColor: backgroundColor // '#FF0000' make sure you use #RRGGBB. Default #333333
+      }
     });
   }
 }

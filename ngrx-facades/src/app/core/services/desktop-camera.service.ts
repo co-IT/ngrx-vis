@@ -15,7 +15,7 @@ export class DesktopCameraService implements AbstractCameraService {
                   window.navigator.webkitGetUserMedia
                 ).call(window.navigator, options, resolve, reject);
               });
-            },
+            }
           }
         : null) || window.navigator.mediaDevices;
 

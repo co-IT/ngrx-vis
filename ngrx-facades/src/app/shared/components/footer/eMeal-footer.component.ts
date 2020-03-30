@@ -5,7 +5,7 @@ import { environment } from '@environments/environment';
 
 @Component({
   selector: 'app-emeal-footer',
-  templateUrl: 'eMeal-footer.component.html',
+  templateUrl: 'eMeal-footer.component.html'
 })
 export class EMealFooterComponent {
   percentage: string;

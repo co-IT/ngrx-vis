@@ -26,18 +26,10 @@ export function createNetwork(actionContexts: ActionContext[]): DataSet {
     const actionHandlerToFollowUpActionEdges: Edge[] = []
 
     const handlerNodes = actionContext.handlers.map(actionHandler => {
-      const actionHandlerNode = createNode(
-        actionHandler.fileName,
-        3,
-        'effect'
-      )
+      const actionHandlerNode = createNode(actionHandler.fileName, 3, 'effect')
 
       if (actionHandler.followUpActions) {
-        const followUpDispatchNode = createNode(
-          'dispatches',
-          4,
-          'dispatch'
-        )
+        const followUpDispatchNode = createNode('dispatches', 4, 'dispatch')
         actionHandlerToFollowUpActionEdges.push(
           createEdge(actionHandlerNode, followUpDispatchNode)
         )

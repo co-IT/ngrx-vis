@@ -5,11 +5,11 @@ import * as fromFoodGuards from './guards';
 export const FoodRoutes: Routes = [
   {
     path: '',
-    component: components.MainFoodComponent,
+    component: components.MainFoodComponent
   },
   {
     path: ':foodId',
     component: components.FoodDetailsComponent,
-    canActivate: [fromFoodGuards.FoodIsLoadedGuard],
-  },
+    canActivate: [fromFoodGuards.FoodIsLoadedGuard]
+  }
 ];

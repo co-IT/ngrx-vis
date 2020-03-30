@@ -9,7 +9,7 @@ import { FoodStoreFacade } from '../../store/food-store.facade';
 @Component({
   selector: 'app-ingredients',
   templateUrl: './ingredients.component.html',
-  styleUrls: ['./ingredients.component.css'],
+  styleUrls: ['./ingredients.component.css']
 })
 export class IngredientsComponent implements OnInit {
   ingredients$: Observable<Ingredient[]>;
@@ -19,7 +19,7 @@ export class IngredientsComponent implements OnInit {
 
   ngOnInit() {
     this.form = new FormGroup({
-      description: new FormControl('', Validators.required),
+      description: new FormControl('', Validators.required)
     });
 
     this.ingredients$ = this.facade.ingredients$;

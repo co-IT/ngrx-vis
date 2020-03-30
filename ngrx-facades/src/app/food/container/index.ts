@@ -5,7 +5,7 @@ import { MainFoodComponent } from './main-food/main-food.component';
 export const allContainerComponents: any[] = [
   MainFoodComponent,
   FoodDetailsComponent,
-  IngredientsComponent,
+  IngredientsComponent
 ];
 
 export * from './food-details/food-details.component';

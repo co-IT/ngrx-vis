@@ -6,7 +6,7 @@ import { FoodStoreFacade } from '../../food/store/food-store.facade';
 import { Ingredient } from '../../shared/models/ingredient.model';
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class SignalRService {
   private foodHubConnection: HubConnection;

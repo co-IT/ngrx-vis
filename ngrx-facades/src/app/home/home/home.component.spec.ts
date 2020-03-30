@@ -32,29 +32,29 @@ describe('HomeComponent', () => {
         RouterTestingModule,
         StoreModule.forRoot({
           ...fromRootStore.reducers,
-          home: combineReducers(fromHomeStore.reducers),
-        }),
+          home: combineReducers(fromHomeStore.reducers)
+        })
       ],
       declarations: [
         HomeComponent,
         RandomMealComponent,
         SingleMealComponent,
-        EMealFooterComponent,
+        EMealFooterComponent
       ],
       providers: [
         { provide: HomeStoreFacade, useClass: HomeStoreFacade },
         { provide: FoodDataService, useClass: FoodServiceMock },
         {
           provide: AbstractNotificationService,
-          useClass: AbstractNotificationServiceStub,
+          useClass: AbstractNotificationServiceStub
         },
         { provide: CpuValueService, useClass: CpuValueServiceMock },
         {
           provide: AbstractCameraService,
-          useClass: AbstractCameraServiceStub,
+          useClass: AbstractCameraServiceStub
         },
-        PlatformInformationProvider,
-      ],
+        PlatformInformationProvider
+      ]
     }).compileComponents(); // compile template and css
   }));
 

@@ -5,7 +5,7 @@ import { FoodItem } from '@app/shared/models/foodItem.model';
 @Component({
   selector: 'app-foodlist',
   templateUrl: './food-list.component.html',
-  styleUrls: ['./food-list.component.css'],
+  styleUrls: ['./food-list.component.css']
 })
 export class FoodListComponent {
   foodItem: FoodItem;

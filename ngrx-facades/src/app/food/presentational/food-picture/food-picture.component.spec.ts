@@ -11,8 +11,8 @@ describe('FoodPictureComponent', () => {
     TestBed.configureTestingModule({
       declarations: [FoodPictureComponent],
       providers: [
-        { provide: AbstractCameraService, useClass: MobileCameraService },
-      ],
+        { provide: AbstractCameraService, useClass: MobileCameraService }
+      ]
     }).compileComponents();
   }));
 

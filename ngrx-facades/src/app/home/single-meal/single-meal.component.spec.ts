@@ -6,13 +6,11 @@ describe('SingleMealComponent', () => {
   let component: SingleMealComponent;
   let fixture: ComponentFixture<SingleMealComponent>;
 
-  beforeEach(
-    async(() => {
-      TestBed.configureTestingModule({
-        declarations: [SingleMealComponent]
-      }).compileComponents();
-    })
-  );
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      declarations: [SingleMealComponent]
+    }).compileComponents();
+  }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(SingleMealComponent);

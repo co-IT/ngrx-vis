@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 const APP_PREFIX = 'OS-';
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class StorageService {
   private _storage: Storage;
@@ -14,7 +14,7 @@ export class StorageService {
     return {
       isAuthenticated: !!isAuthenticated,
       pending: false,
-      signalRConnectionEstablished: false,
+      signalRConnectionEstablished: false
     };
   }
 

@@ -9,20 +9,20 @@ import { Configuration } from './configuration/app.configuration';
   imports: [
     // Modules
     CommonModule,
-    RouterModule,
+    RouterModule
   ],
 
   declarations: [
     // Components & directives
     NavigationComponent,
-    EMealFooterComponent,
+    EMealFooterComponent
   ],
 
   providers: [
     // Services
-    Configuration,
+    Configuration
   ],
 
-  exports: [NavigationComponent, EMealFooterComponent],
+  exports: [NavigationComponent, EMealFooterComponent]
 })
 export class SharedModule {}

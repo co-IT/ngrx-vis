@@ -3,7 +3,7 @@ import {
   async,
   ComponentFixture,
   inject,
-  TestBed,
+  TestBed
 } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { combineReducers, StoreModule } from '@ngrx/store';
@@ -26,8 +26,8 @@ describe('NavigationComponent', () => {
       imports: [
         StoreModule.forRoot({
           ...fromRootStore.reducers,
-          core: combineReducers(fromCoreStoreReducers.reducers),
-        }),
+          core: combineReducers(fromCoreStoreReducers.reducers)
+        })
       ],
       declarations: [NavigationComponent],
       providers: [
@@ -35,10 +35,10 @@ describe('NavigationComponent', () => {
         CurrentUserService,
         {
           provide: AuthenticationService,
-          useClass: AuthenticationServiceStub,
+          useClass: AuthenticationServiceStub
         },
-        StorageService,
-      ],
+        StorageService
+      ]
     }).compileComponents(); // compile template and css
   }));
 

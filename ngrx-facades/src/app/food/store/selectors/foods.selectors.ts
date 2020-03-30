@@ -19,12 +19,9 @@ export const getFoodItemsLoaded = createSelector(
   fromFood.getFoodItemsLoaded
 );
 
-export const getAllFoods = createSelector(
-  getAllFoodEntities,
-  entities => {
-    return Object.keys(entities).map(id => entities[id]);
-  }
-);
+export const getAllFoods = createSelector(getAllFoodEntities, entities => {
+  return Object.keys(entities).map(id => entities[id]);
+});
 
 export const getSelectedFood = createSelector(
   getAllFoodEntities,

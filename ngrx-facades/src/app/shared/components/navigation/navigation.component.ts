@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-navigation',
-  templateUrl: 'navigation.component.html',
+  templateUrl: 'navigation.component.html'
 })
 export class NavigationComponent {
   isAuthenticated$: Observable<boolean>;

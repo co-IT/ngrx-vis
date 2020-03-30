@@ -3,7 +3,7 @@ import {
   FormControl,
   NG_VALIDATORS,
   ValidationErrors,
-  Validator,
+  Validator
 } from '@angular/forms';
 
 @Directive({
@@ -13,17 +13,17 @@ import {
     {
       provide: NG_VALIDATORS,
       useExisting: forwardRef(() => IsNumberValidator),
-      multi: true,
-    },
-  ],
+      multi: true
+    }
+  ]
 })
 export class IsNumberValidator implements Validator {
   validate(c: FormControl): ValidationErrors | null {
     if (isNaN(+c.value)) {
       return {
         isNumber: {
-          valid: false,
-        },
+          valid: false
+        }
       };
     }
 

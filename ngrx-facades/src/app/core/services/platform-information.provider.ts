@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 declare let window: any;
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class PlatformInformationProvider {
   private _iOS: boolean;

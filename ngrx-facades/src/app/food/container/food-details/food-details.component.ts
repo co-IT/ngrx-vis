@@ -5,7 +5,7 @@ import { FoodStoreFacade } from '../../store/food-store.facade';
 
 @Component({
   selector: 'app-food-details',
-  templateUrl: './food-details.component.html',
+  templateUrl: './food-details.component.html'
 })
 export class FoodDetailsComponent implements OnInit {
   selectedItem$: Observable<FoodItem>;

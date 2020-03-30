@@ -12,8 +12,8 @@ import { reducers } from './store/reducers';
   imports: [
     CommonModule,
     StoreModule.forFeature('core', reducers),
-    EffectsModule.forFeature(effects),
-  ],
+    EffectsModule.forFeature(effects)
+  ]
 })
 export class CoreModule {
   static forRoot(): ModuleWithProviders {
@@ -23,9 +23,9 @@ export class CoreModule {
         {
           provide: HTTP_INTERCEPTORS,
           useClass: StandardHeaderInterceptor,
-          multi: true,
-        },
-      ],
+          multi: true
+        }
+      ]
     };
   }
 

@@ -22,16 +22,16 @@ import { reducers } from './store/reducers';
     SharedModule,
     RouterModule.forChild(HomeRoutes),
     StoreModule.forFeature('home', reducers),
-    EffectsModule.forFeature(effects),
+    EffectsModule.forFeature(effects)
   ],
 
   declarations: [
     // Components & Directives
     HomeComponent,
     RandomMealComponent,
-    SingleMealComponent,
+    SingleMealComponent
   ],
 
-  exports: [HomeComponent],
+  exports: [HomeComponent]
 })
 export class HomeModule {}

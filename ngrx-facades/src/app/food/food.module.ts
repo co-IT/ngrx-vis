@@ -22,7 +22,7 @@ import { IsNumberValidator } from './validators/isNumber.validator';
     RouterModule.forChild(FoodRoutes),
     StoreModule.forFeature('food', reducers),
     EffectsModule.forFeature(effects),
-    ReactiveFormsModule,
+    ReactiveFormsModule
   ],
 
   declarations: [
@@ -31,9 +31,9 @@ import { IsNumberValidator } from './validators/isNumber.validator';
 
     IsInRangeValidator,
     IsNumberValidator,
-    FilterPipe,
+    FilterPipe
   ],
 
-  exports: [],
+  exports: []
 })
 export class FoodModule {}

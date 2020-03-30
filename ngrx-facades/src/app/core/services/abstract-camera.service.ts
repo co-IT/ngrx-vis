@@ -16,7 +16,7 @@ interface ICameraService {
 
 @Injectable({
   providedIn: 'root',
-  useFactory: cameraFactory,
+  useFactory: cameraFactory
 })
 export abstract class AbstractCameraService implements ICameraService {
   abstract getPhoto(): Observable<string>;

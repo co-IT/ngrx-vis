@@ -21,9 +21,7 @@
         />
 
         <span
-          *ngIf="
-            foodName?.errors?.required && (foodName?.dirty && !f.submitted)
-          "
+          *ngIf="foodName?.errors?.required && foodName?.dirty && !f.submitted"
           id="helpBlock"
           class="text-danger"
           >*</span
@@ -74,27 +72,21 @@
         />
 
         <span
-          *ngIf="
-            calories?.errors?.required && (calories?.dirty && !f.submitted)
-          "
+          *ngIf="calories?.errors?.required && calories?.dirty && !f.submitted"
           class="text-danger"
         >
           *
         </span>
 
         <span
-          *ngIf="
-            calories?.errors?.isNumber && (calories?.dirty && !f.submitted)
-          "
+          *ngIf="calories?.errors?.isNumber && calories?.dirty && !f.submitted"
           class="text-danger"
         >
           Please enter a number
         </span>
 
         <span
-          *ngIf="
-            calories?.errors?.isInRange && (calories?.dirty && !f.submitted)
-          "
+          *ngIf="calories?.errors?.isInRange && calories?.dirty && !f.submitted"
           class="text-danger"
         >
           Please enter a valid number (Integer-Range)

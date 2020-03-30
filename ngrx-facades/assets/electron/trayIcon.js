@@ -14,15 +14,15 @@ let buildTrayIcon = mainWindow => {
       label: 'Open application',
       click: function() {
         mainWindow.show();
-      },
+      }
     },
     {
       label: 'Quit',
       click: function() {
         app.isQuiting = true;
         app.quit();
-      },
-    },
+      }
+    }
   ]);
 
   tray.setContextMenu(contextMenu);

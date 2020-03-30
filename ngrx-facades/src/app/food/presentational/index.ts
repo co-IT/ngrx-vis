@@ -7,5 +7,5 @@ export const allPresComponents: any[] = [
   FoodFormComponent,
   FoodListComponent,
   FoodPictureComponent,
-  IngredientListComponent,
+  IngredientListComponent
 ];
