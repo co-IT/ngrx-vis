@@ -1,16 +1,14 @@
-import { Injectable } from '@angular/core';
-
-import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { defer, of } from 'rxjs';
-import { catchError, map, mergeMap, switchMap } from 'rxjs/operators';
-
+import { Injectable } from '@angular/core'
 import {
   CollectionApiActions,
   CollectionPageActions,
-  SelectedBookPageActions,
-} from '@example-app/books/actions';
-import { Book } from '@example-app/books/models';
-import { BookStorageService } from '@example-app/core/services';
+  SelectedBookPageActions
+} from '@example-app/books/actions'
+import { Book } from '@example-app/books/models'
+import { BookStorageService } from '@example-app/core/services'
+import { Actions, createEffect, ofType } from '@ngrx/effects'
+import { defer, of } from 'rxjs'
+import { catchError, map, mergeMap, switchMap } from 'rxjs/operators'
 
 @Injectable()
 export class CollectionEffects {
@@ -27,7 +25,7 @@ export class CollectionEffects {
   checkStorageSupport$ = createEffect(
     () => defer(() => this.storageService.supported()),
     { dispatch: false }
-  );
+  )
 
   loadCollection$ = createEffect(() =>
     this.actions$.pipe(
@@ -43,7 +41,7 @@ export class CollectionEffects {
         )
       )
     )
-  );
+  )
 
   addBookToCollection$ = createEffect(() =>
     this.actions$.pipe(
@@ -55,7 +53,7 @@ export class CollectionEffects {
         )
       )
     )
-  );
+  )
 
   removeBookFromCollection$ = createEffect(() =>
     this.actions$.pipe(
@@ -67,7 +65,7 @@ export class CollectionEffects {
         )
       )
     )
-  );
+  )
 
   constructor(
     private actions$: Actions,
