@@ -30,8 +30,8 @@ npm install -D ngrx-vis
 
 ### Which versions of NgRx are supported?
 
-You need at least NgRx 8 installed. NgRx Vis traces actions which are created by
-`createAction`.
+You need at least NgRx 8 installed. NgRx Vis traces actions which are created
+with the `createAction` helper.
 
 ### How does a generated graph looks like?
 
@@ -41,10 +41,11 @@ You need at least NgRx 8 installed. NgRx Vis traces actions which are created by
 
 ### Actions created at runtime
 
-NgRx Vis is not capable of resolving actions that a created at runtime.
+NgRx Vis is not capable of resolving actions that are created at runtime.
 Currently @ngrx/data-Actions wont show up either.
-In some those cases where Actions are generated based on a convention, it is
-possible to write a Resolver that generates the needed meta data for the graph.
+In some of those cases where actions are generated based on a convention,
+it would be possible to write a Resolver that generates the needed meta data
+for the graph.
 
 ### 3rd Party Libraries
 
