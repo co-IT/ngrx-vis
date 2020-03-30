@@ -19,11 +19,21 @@ recommended by the NgRx core-team.
 ```bash
 # install ngrx-vis
 npm install -D ngrx-vis
+```
 
-# run ngrx-vis
-./node_modules/.bin/ngrx-vis -p ./src/tsconfig.app.json
+Create a script in your package.json executing NgRx Vis.
 
-# -> generated report is saved in ngrx-vis/
+```json
+{
+  "scripts": {
+    "ngrx-vis": "ngrx-vis -p ./tsconfig.app.json"
+  }
+}
+```
+
+```bash
+# generate report and store it in ngrx-vis/
+npm run ngrx-vis
 ```
 
 ## FAQ
