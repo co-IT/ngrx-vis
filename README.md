@@ -36,6 +36,19 @@ Create a script in your package.json executing NgRx Vis.
 npm run ngrx-vis
 ```
 
+## Options
+
+```bash
+Options:
+  -V, --version                 output the version number
+  -g, --glob <**/*.actions.ts>  Glob for files containing actions (default: "**/*.actions.ts")
+  -p, --project <path>          Specify path to tsconfig
+  -h, --help                    display help for command
+
+Example call:
+  $ ngrx-vis --project ./src/tsconfig.app.json
+```
+
 ## FAQ
 
 ### Which versions of NgRx are supported?
