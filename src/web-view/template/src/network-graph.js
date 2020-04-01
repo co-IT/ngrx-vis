@@ -43,8 +43,8 @@
     methods: {
       focusSelectedNode() {
         this.visJsNetwork.focus(this.actionNodeSelected.id, {
-          scale: 0.7,
-          offset: { x: -150, y: -250 }
+          scale: 0.6,
+          offset: { x: -100, y: -150 }
         })
       }
     },
@@ -57,8 +57,8 @@
 
       this.visJsNetwork.once('beforeDrawing', () => {
         this.visJsNetwork.focus(this.firstNode.id, {
-          scale: 0.7,
-          offset: { x: -150, y: -250 }
+          scale: 0.6,
+          offset: { x: -100, y: -150 }
         })
 
         this.actionNodeSelected = this.firstNode
