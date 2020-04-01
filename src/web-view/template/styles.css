@@ -25,6 +25,7 @@ body {
 }
 
 .navigation {
+  width: 250px;
   grid-area: nav;
   height: 100vh;
 }

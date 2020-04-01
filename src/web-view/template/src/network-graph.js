@@ -6,12 +6,12 @@ Vue.component('action-network-graphs', {
       <div class="top-menu"></div>
       <div class="filter">
         <div class="filter-input-wrap">
-          <input type="text" class="filter-input" placeholder="Filter actions">
+          <input v-model="filter" type="text" class="filter-input" placeholder="Filter actions">
         </div>
       </div>
       <ul class="filter-results">
         <li 
-          v-for="node in actionNodes"
+          v-for="node in filteredActionNodes"
           :value="node"
           @click="focusSelectedNode(node)"
         >
@@ -27,7 +27,8 @@ Vue.component('action-network-graphs', {
   data() {
     return {
       actionNodeSelected: null,
-      visJsNetwork: null
+      visJsNetwork: null,
+      filter: ''
     }
   },
   computed: {
@@ -40,6 +41,21 @@ Vue.component('action-network-graphs', {
       }
 
       return this.nodes.filter(node => node.group === 'action')
+    },
+    filteredActionNodes() {
+      if (!Array.isArray(this.nodes)) {
+        return []
+      }
+
+      if (!this.filter) {
+        return this.nodes.filter(node => node.group === 'action')
+      }
+
+      return this.nodes.filter(
+        node =>
+          node.group === 'action' &&
+          node.label.toLowerCase().includes(this.filter.toLowerCase())
+      )
     }
   },
   props: ['nodes', 'edges', 'options'],
