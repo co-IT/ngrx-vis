@@ -1,11 +1,11 @@
 import { ReferenceEntry } from 'ts-morph'
+import { ActionHandler } from './action-handler'
 import { ActionResolver } from './action-reference-resolver'
 import { ActionRuleRunnerConfiguration } from './action-rule-runner-configuration'
-import { ActionUsageInfo } from './action-usage-info'
 
 export interface ActionReferenceMap {
-  dispatchers: ActionUsageInfo[]
-  handlers: ActionUsageInfo[]
+  dispatchers: ActionHandler[]
+  handlers: ActionHandler[]
 }
 
 export class ActionResolverRunner {

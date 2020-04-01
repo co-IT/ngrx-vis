@@ -1,7 +1,7 @@
 import { basename } from 'path'
 import { ReferenceEntry } from 'ts-morph'
+import { ActionHandler } from '../core/action-handler'
 import { ActionResolver } from '../core/action-reference-resolver'
-import { ActionUsageInfo } from '../core/action-usage-info'
 import { getCaller } from '../utils/ts-morph'
 
 export class StoreDispatcherResolver implements ActionResolver {
@@ -15,10 +15,11 @@ export class StoreDispatcherResolver implements ActionResolver {
       ? false
       : actionDispatchCall.getText().includes('.dispatch(')
   }
-  execute(actionReference: ReferenceEntry): ActionUsageInfo {
+  execute(actionReference: ReferenceEntry): ActionHandler {
     return {
       fileName: basename(actionReference.getSourceFile().getFilePath()),
-      filePath: actionReference.getSourceFile().getFilePath()
+      filePath: actionReference.getSourceFile().getFilePath(),
+      category: 'component'
     }
   }
 }

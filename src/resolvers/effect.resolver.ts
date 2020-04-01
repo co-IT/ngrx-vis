@@ -1,7 +1,7 @@
 import { basename } from 'path'
 import { ReferenceEntry, SyntaxKind } from 'ts-morph'
+import { ActionHandler } from '../core/action-handler'
 import { ActionResolver } from '../core/action-reference-resolver'
-import { ActionUsageInfo } from '../core/action-usage-info'
 import { extractAllActionTypes } from '../utils/ngrx'
 import { getCaller } from '../utils/ts-morph'
 
@@ -11,14 +11,15 @@ export class EffectProcessingResolver implements ActionResolver {
     return !caller ? false : caller.getText().includes('ofType(')
   }
 
-  execute(actionReference: ReferenceEntry): ActionUsageInfo {
+  execute(actionReference: ReferenceEntry): ActionHandler {
     return {
       fileName: basename(actionReference.getSourceFile().getFilePath()),
       filePath: actionReference.getSourceFile().getFilePath(),
+      category: 'effect',
       followUpActions: extractAllActionTypes(
         actionReference
           .getNode()
-          .getFirstAncestorByKind(SyntaxKind.PropertyDeclaration)!
+          .getFirstAncestorByKind(SyntaxKind.PropertyDeclaration)
       )
     }
   }

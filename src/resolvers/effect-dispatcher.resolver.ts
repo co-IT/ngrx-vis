@@ -1,7 +1,7 @@
 import { basename } from 'path'
 import { PropertyDeclaration, ReferenceEntry, SyntaxKind } from 'ts-morph'
+import { ActionHandler } from '../core/action-handler'
 import { ActionResolver } from '../core/action-reference-resolver'
-import { ActionUsageInfo } from '../core/action-usage-info'
 import { extractActionType, extractAllActionTypes } from '../utils/ngrx'
 
 export class EffectDispatcherRule implements ActionResolver {
@@ -18,14 +18,15 @@ export class EffectDispatcherRule implements ActionResolver {
         )
   }
 
-  execute(actionReference: ReferenceEntry): ActionUsageInfo {
+  execute(actionReference: ReferenceEntry): ActionHandler {
     return {
       fileName: basename(actionReference.getSourceFile().getFilePath()),
-      filePath: actionReference.getSourceFile().getFilePath()
+      filePath: actionReference.getSourceFile().getFilePath(),
+      category: 'effect'
     }
   }
 
-  private isDispatchDisabled(effectDeclaration: PropertyDeclaration) {
+  private isDispatchDisabled(effectDeclaration: PropertyDeclaration): boolean {
     return effectDeclaration.getText().includes('{ dispatch: false }')
   }
 }

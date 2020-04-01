@@ -35,13 +35,6 @@ Vue.component('action-network-graphs', {
     firstNode() {
       return this.nodes[0]
     },
-    actionNodes() {
-      if (!Array.isArray(this.nodes)) {
-        return []
-      }
-
-      return this.nodes.filter(node => node.group === 'action')
-    },
     filteredActionNodes() {
       if (!Array.isArray(this.nodes)) {
         return []
@@ -94,10 +87,8 @@ const app = new Vue({
     networkOptions: {
       nodes: {
         shape: 'dot',
-        scaling: {
-          min: 32,
-          max: 64
-        }
+        size: 10,
+        color: '#006DF0'
       },
       edges: {
         smooth: {
@@ -112,28 +103,28 @@ const app = new Vue({
       },
       groups: {
         action: {
-          shape: 'diamond',
-          size: 5,
-          color: '#A82AC4'
+          shape: 'image',
+          image: 'img/action.png'
         },
         component: {
-          shape: 'square',
-          color: '#DE7FA3',
-          font: {
-            multi: 'md'
-          },
-          size: 10
+          shape: 'image',
+          image: 'img/component.png'
         },
         reducer: {
-          color: '#5B2AC4'
+          shape: 'image',
+          image: 'img/reducer.png'
         },
         effect: {
-          color: '#2AC4A8',
-          shape: 'square',
+          shape: 'image',
+          image: 'img/effect.png'
+        },
+        'effect-action': {
+          shape: 'image',
+          image: 'img/action.png',
           size: 10
         },
         dispatch: {
-          color: '#FC9B2E',
+          color: '#DEDEDE',
           size: 5
         }
       }

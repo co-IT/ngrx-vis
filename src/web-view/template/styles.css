@@ -102,3 +102,7 @@ body {
 .canvas {
   grid-area: canvas;
 }
+
+.vis-network {
+  outline: none;
+}

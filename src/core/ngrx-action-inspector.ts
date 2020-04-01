@@ -8,7 +8,8 @@ import {
 import {
   extractActionPayload,
   extractActionType,
-  isTypedAction
+  isTypedAction,
+  segmentAction
 } from '../utils/ngrx'
 import { ActionContext } from './action-context'
 import { ActionReferenceMap, ActionResolverRunner } from './action-rule-runner'
@@ -34,9 +35,11 @@ export class NgRxActionInspector {
       .filter(isTypedAction)
       .map(declaration => ({
         filePath: file.getFilePath(),
-        declaredName: declaration.getName(),
-        actionType: extractActionType(declaration),
-        actionPayloadType: extractActionPayload(declaration),
+        actionMeta: {
+          declaredName: declaration.getName(),
+          ...segmentAction(extractActionType(declaration)),
+          payloadType: extractActionPayload(declaration)
+        },
         ...this.identifyReferences(declaration)
       }))
   }

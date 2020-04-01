@@ -1,15 +1,19 @@
 import { ActionContext } from '../core/action-context'
-import { DataSet, Edge, Node } from './index'
-import { createNode } from './create-node'
 import { createEdge } from './create-edge'
 import { createEmptyDataSet } from './create-empty-data-set'
+import { createNode } from './create-node'
+import { DataSet, Edge, Node } from './index'
 
 export function createNetwork(actionContexts: ActionContext[]): DataSet {
   return actionContexts.reduce((dataSet, actionContext) => {
-    const actionNode = createNode(actionContext.actionType, 0, 'action')
+    const actionNode = createNode(
+      actionContext.actionMeta.typeFull,
+      0,
+      'action'
+    )
 
     const dispatcherNodes = actionContext.dispatchers.map(actionDispatcher =>
-      createNode(actionDispatcher.fileName, 1, 'component')
+      createNode(actionDispatcher.fileName, 1, actionDispatcher.category)
     )
 
     const actionNodeToDispatcherNodesEdges = dispatcherNodes.map(
@@ -26,7 +30,11 @@ export function createNetwork(actionContexts: ActionContext[]): DataSet {
     const actionHandlerToFollowUpActionEdges: Edge[] = []
 
     const handlerNodes = actionContext.handlers.map(actionHandler => {
-      const actionHandlerNode = createNode(actionHandler.fileName, 3, 'effect')
+      const actionHandlerNode = createNode(
+        actionHandler.fileName,
+        3,
+        actionHandler.category
+      )
 
       if (actionHandler.followUpActions) {
         const followUpDispatchNode = createNode('dispatches', 4, 'dispatch')
@@ -34,7 +42,7 @@ export function createNetwork(actionContexts: ActionContext[]): DataSet {
           createEdge(actionHandlerNode, followUpDispatchNode)
         )
         const effectFollowUpActionNodes = actionHandler.followUpActions.map(
-          followUpAction => createNode(followUpAction, 5, 'action')
+          followUpAction => createNode(followUpAction, 5, 'effect-action')
         )
         followUpActionNodes.push(
           followUpDispatchNode,
