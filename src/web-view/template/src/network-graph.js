@@ -1,124 +1,126 @@
 /* eslint-disable no-undef */
-;(() => {
-  Vue.component('action-network-graphs', {
-    template: `
-            <div class="network-graph">
-              <label>
-              Jump to Action: 
-              <select
-                v-model="actionNodeSelected"
-                @change="focusSelectedNode()"
-              >
-                <option
-                  v-for="node in actionNodes"
-                  :value="node"
-                >
-                  {{ node.label }}
-                </option>
-              </select>
-              <label>
-
-                <div ref="canvas" class="ngrx-action-canvas"></div>
-            </div>
+Vue.component('action-network-graphs', {
+  template: `
+  <div class="ngrx-vis">
+    <div class="navigation">
+      <div class="top-menu"></div>
+      <div class="filter">
+        <div class="filter-input-wrap">
+          <input type="text" class="filter-input" placeholder="Filter actions">
+        </div>
+      </div>
+      <ul class="filter-results">
+        <li 
+          v-for="node in actionNodes"
+          :value="node"
+          @click="focusSelectedNode(node)"
+        >
+          <h4 class="filter-result-title">{{ node.label }}</h4>
+          <span class="filter-result-subtitle"></span>
+        </li>
+        
+      </ul>
+    </div>
+    <div class="canvas" ref="canvas"></div>
+  </div>
           `,
-    data() {
-      return {
-        actionNodeSelected: null,
-        visJsNetwork: null
-      }
+  data() {
+    return {
+      actionNodeSelected: null,
+      visJsNetwork: null
+    }
+  },
+  computed: {
+    firstNode() {
+      return this.nodes[0]
     },
-    computed: {
-      firstNode() {
-        return this.nodes[0]
-      },
-      actionNodes() {
-        if (!Array.isArray(this.nodes)) {
-          return []
-        }
-
-        return this.nodes.filter(node => node.group === 'action')
+    actionNodes() {
+      if (!Array.isArray(this.nodes)) {
+        return []
       }
-    },
-    props: ['nodes', 'edges', 'options'],
-    methods: {
-      focusSelectedNode() {
-        this.visJsNetwork.focus(this.actionNodeSelected.id, {
-          scale: 0.6,
-          offset: { x: -100, y: -150 }
-        })
-      }
-    },
-    mounted() {
-      this.visJsNetwork = new vis.Network(
-        this.$refs.canvas,
-        { nodes: this.nodes, edges: this.edges },
-        this.options
-      )
 
-      this.visJsNetwork.once('beforeDrawing', () => {
-        this.visJsNetwork.focus(this.firstNode.id, {
-          scale: 0.6,
-          offset: { x: -100, y: -150 }
-        })
-
-        this.actionNodeSelected = this.firstNode
+      return this.nodes.filter(node => node.group === 'action')
+    }
+  },
+  props: ['nodes', 'edges', 'options'],
+  methods: {
+    focusSelectedNode(node) {
+      this.visJsNetwork.focus(node.id, {
+        scale: 1,
+        offset: { x: -100, y: -150 }
       })
     }
-  })
+  },
+  mounted() {
+    this.visJsNetwork = new vis.Network(
+      this.$refs.canvas,
+      { nodes: this.nodes, edges: this.edges },
+      this.options
+    )
 
-  // eslint-disable-next-line no-unused-vars
-  const app = new Vue({
-    el: '#ngrx-vis',
-    data: {
-      networkNodes: JSON.parse('/* __NETWORK_NODES__ */'),
-      networkEdges: JSON.parse('/* __NETWORK_EDGES__ */'),
-      networkOptions: {
-        nodes: {
-          shape: 'dot',
-          scaling: {
-            min: 32,
-            max: 64
-          }
+    this.visJsNetwork.once('beforeDrawing', () => {
+      this.visJsNetwork.focus(this.firstNode.id, {
+        scale: 1,
+        offset: { x: -300, y: -150 }
+      })
+
+      this.actionNodeSelected = this.firstNode
+    })
+  }
+})
+
+// eslint-disable-next-line no-unused-vars
+const app = new Vue({
+  el: '#ngrx-vis',
+  data: {
+    networkNodes: JSON.parse('/* __NETWORK_NODES__ */'),
+    networkEdges: JSON.parse('/* __NETWORK_EDGES__ */'),
+    networkOptions: {
+      nodes: {
+        shape: 'dot',
+        scaling: {
+          min: 32,
+          max: 64
+        }
+      },
+      edges: {
+        smooth: {
+          type: 'cubicBezier',
+          roundness: 0.4
+        }
+      },
+      layout: {
+        hierarchical: {
+          direction: 'LR'
+        }
+      },
+      groups: {
+        action: {
+          shape: 'diamond',
+          size: 5,
+          color: '#A82AC4'
         },
-        edges: {
-          smooth: {
-            type: 'cubicBezier',
-            roundness: 0.4
-          }
+        component: {
+          shape: 'square',
+          color: '#DE7FA3',
+          font: {
+            multi: 'md'
+          },
+          size: 10
         },
-        layout: {
-          hierarchical: {
-            direction: 'LR'
-          }
+        reducer: {
+          color: '#5B2AC4'
         },
-        groups: {
-          action: {
-            shape: 'diamond',
-            size: 5,
-            color: '#A82AC4'
-          },
-          component: {
-            shape: 'square',
-            color: '#DE7FA3',
-            font: {
-              multi: 'md'
-            },
-            size: 10
-          },
-          reducer: {
-            color: '#5B2AC4'
-          },
-          effect: {
-            color: '#2AC4A8',
-            shape: 'square',
-            size: 10
-          },
-          dispatch: {
-            color: '#FC9B2E',
-            size: 5
-          }
+        effect: {
+          color: '#2AC4A8',
+          shape: 'square',
+          size: 10
+        },
+        dispatch: {
+          color: '#FC9B2E',
+          size: 5
         }
       }
     }
-  })
-})()
+  }
+})
