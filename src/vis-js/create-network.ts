@@ -17,10 +17,13 @@ export function createNetwork(actionContexts: ActionContext[]): DataSet {
     )
 
     const actionNodeToDispatcherNodesEdges = dispatcherNodes.map(
-      dispatcherNode => createEdge(actionNode, dispatcherNode)
+      dispatcherNode =>
+        createEdge(actionNode, dispatcherNode, {
+          dashes: true
+        })
     )
 
-    const dispatchNode = createNode('triggers', 2, 'dispatch')
+    const dispatchNode = createNode('dispatch', 2, 'dispatch')
 
     const dispatcherNodesToDispatchNodeEdges = dispatcherNodes.map(
       dispatcherNode => createEdge(dispatcherNode, dispatchNode)
@@ -37,7 +40,7 @@ export function createNetwork(actionContexts: ActionContext[]): DataSet {
       )
 
       if (actionHandler.followUpActions) {
-        const followUpDispatchNode = createNode('dispatches', 4, 'dispatch')
+        const followUpDispatchNode = createNode('dispatch', 4, 'dispatch')
         actionHandlerToFollowUpActionEdges.push(
           createEdge(actionHandlerNode, followUpDispatchNode)
         )
