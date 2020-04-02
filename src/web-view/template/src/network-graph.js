@@ -85,6 +85,13 @@ const app = new Vue({
     networkNodes: JSON.parse('/* __NETWORK_NODES__ */'),
     networkEdges: JSON.parse('/* __NETWORK_EDGES__ */'),
     networkOptions: {
+      physics: {
+        stabilization: {
+          enabled: true,
+          iterations: 0,
+          fit: true
+        }
+      },
       nodes: {
         shape: 'dot',
         size: 10,
@@ -98,7 +105,8 @@ const app = new Vue({
       },
       layout: {
         hierarchical: {
-          direction: 'LR'
+          direction: 'LR',
+          sortMethod: 'directed'
         }
       },
       groups: {
