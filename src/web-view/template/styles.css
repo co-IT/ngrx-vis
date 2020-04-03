@@ -1,7 +1,8 @@
-@import url('https://fonts.googleapis.com/css?family=Roboto:400, 100,  500, 300italic, 500italic, 700italic, 900, 300');
+@import 'https://fonts.googleapis.com/css?family=Roboto:400, 100,  500, 300italic, 500italic, 700italic, 900, 300';
 
 html,
-body {
+body,
+#vue-app {
   height: 100vh;
   margin: 0;
 }
@@ -21,42 +22,44 @@ body {
   grid-template-areas: 'nav canvas';
   grid-template-columns: auto 1fr;
 
-  height: 100vh;
+  height: 100%;
+
+  font-size: 14px;
 }
 
 .navigation {
-  width: 250px;
   grid-area: nav;
-  height: 100vh;
+  display: grid;
+  grid-template-rows: auto auto 1fr;
+  overflow: hidden;
+
+  --navigation-row-height: 50px;
 }
 
 .top-menu {
-  height: 50px;
+  height: var(--navigation-row-height);
   background-color: #dedede;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ngrx-vis-logo {
+  width: 32px;
 }
 
 .filter {
-  height: 50px;
+  height: var(--navigation-row-height);
   padding: 8px;
   background-color: #eeeeee;
-}
-
-.filter-input-wrap {
-  display: flex;
 }
 
 .filter-input {
   display: block;
   border-radius: 12px;
   border: 1px solid #ccc;
-  padding-top: 8px;
-  padding-right: 16px;
-  padding-bottom: 8px;
-  padding-left: 16px;
-
-  font-size: 12px;
+  padding: 8px 16px;
   font-weight: 400;
-
   width: 100%;
   flex-grow: 1;
 
@@ -64,7 +67,6 @@ body {
 }
 
 .filter-results {
-  height: calc(100vh - 100px);
   cursor: pointer;
   background: #f7f7f7;
   list-style: none;
@@ -72,29 +74,24 @@ body {
   padding: 0;
   overflow: auto;
 }
-.filter-results li {
-  padding-left: 12px;
-  padding-right: 12px;
-  padding-top: 16px;
-  padding-bottom: 16px;
-}
 
+.filter-results li {
+  padding: 16px 12px;
+}
 .filter-results li:hover {
   background-color: #dddddd;
 }
 
-.filter-result-title {
-  font-size: 14px;
+.filter-results li .filter-result-title {
   font-weight: 500;
   margin: 0;
   padding: 0;
 }
 
-.filter-result-subtitle {
+.filter-results li .filter-result-subtitle {
   display: inline-block;
   color: #333333;
   padding-top: 4px;
-  font-size: 14px;
   word-break: break-word;
   width: 200px;
 }

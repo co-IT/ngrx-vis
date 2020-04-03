@@ -1,28 +1,32 @@
 /* eslint-disable no-undef */
+
 Vue.component('action-network-graphs', {
   template: `
-  <div class="ngrx-vis">
-    <div class="navigation">
-      <div class="top-menu"></div>
-      <div class="filter">
-        <div class="filter-input-wrap">
-          <input v-model="filter" type="text" class="filter-input" placeholder="Filter actions">
-        </div>
+  <section class="ngrx-vis">
+    <nav class="navigation">
+      <div class="top-menu">
+        <img 
+          src="img/logo-black.svg"
+          alt="logo: outlined, black shield with a black fish inside"
+          class="ngrx-vis-logo"
+        >
       </div>
+      <form class="filter">
+        <input type="text" class="filter-input" placeholder="Filter actions">
+      </form>
       <ul class="filter-results">
         <li 
           v-for="node in filteredActionNodes"
           :value="node"
           @click="focusSelectedNode(node)"
         >
-          <h4 class="filter-result-title">{{ node.label }}</h4>
+          <span class="filter-result-title">{{ node.label }}</span>
           <span class="filter-result-subtitle"></span>
         </li>
-        
       </ul>
-    </div>
+    </nav>
     <div class="canvas" ref="canvas"></div>
-  </div>
+  </section>
           `,
   data() {
     return {
@@ -80,7 +84,7 @@ Vue.component('action-network-graphs', {
 
 // eslint-disable-next-line no-unused-vars
 const app = new Vue({
-  el: '#ngrx-vis',
+  el: '#vue-app',
   data: {
     networkNodes: JSON.parse('/* __NETWORK_NODES__ */'),
     networkEdges: JSON.parse('/* __NETWORK_EDGES__ */'),
