@@ -1,5 +1,9 @@
 # NgRx Vis
 
+<p align="center">
+  <img src="https://github.com/co-IT/ngrx-vis/blob/master/assets/logo.png?raw=true">
+</p>
+
 > ⚙️ This package is in a very early stage.
 > 🐛You are welcome to test it and report an issue if you find any bug.
 
