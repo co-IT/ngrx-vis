@@ -12,7 +12,7 @@ Vue.component('action-network-graphs', {
         >
       </div>
       <form class="filter">
-        <input type="text" class="filter-input" placeholder="Filter actions">
+        <input v-model="filter" type="text" class="filter-input" placeholder="Filter actions">
       </form>
       <ul class="filter-results">
         <li 
