@@ -38,12 +38,10 @@ export function segmentAction(
   typeScope?: string
   typeDescription?: string
 } {
-  if (/\[[\w ]+\][\w ]+/.test(actionType)) {
-    const [typeScope, typeDescription] = actionType.split(']')
-    return { typeFull: actionType, typeScope, typeDescription }
-  } else {
-    return { typeFull: actionType }
-  }
+  const [, typeScope, typeDescription] = /(\[[\w \/]+\])([\w ]+)/.exec(
+    actionType
+  )
+  return { typeFull: actionType, typeScope, typeDescription }
 }
 
 export function isTypedAction(declaration: Node<ts.Node>): boolean {

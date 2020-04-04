@@ -83,6 +83,7 @@ body {
 }
 
 .filter-results li .filter-result-title {
+  display: block;
   font-weight: 500;
   margin: 0;
   padding: 0;

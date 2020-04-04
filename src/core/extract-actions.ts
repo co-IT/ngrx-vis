@@ -9,6 +9,7 @@ export function extractActions(
 }[] {
   return actionContexts.map(context => ({
     id: context.id,
+    typeFull: context.actionMeta.typeFull || 'not set',
     typeScope: context.actionMeta.typeScope || 'not set',
     typeDescription: context.actionMeta.typeDescription || 'not set'
   }))

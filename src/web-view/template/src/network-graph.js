@@ -74,6 +74,33 @@ Vue.component('action-network-graphs', {
         offset: { x: -300, y: -150 }
       })
     })
+
+    this.visJsNetwork.on('click', params => {
+      const nodeId = params.nodes[0]
+
+      if (!nodeId) {
+        return
+      }
+
+      const node = this.nodes.find(node => node.id === nodeId)
+
+      if (!node) {
+        return
+      }
+
+      const actionJumpTarget = this.actionsPlain.find(
+        action => action.typeFull === node.label
+      )
+
+      if (!actionJumpTarget) {
+        return
+      }
+
+      this.visJsNetwork.focus(actionJumpTarget.id, {
+        scale: 1,
+        offset: { x: -300, y: -150 }
+      })
+    })
   }
 })
 
