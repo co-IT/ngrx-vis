@@ -19,8 +19,16 @@ export class EffectDispatcherRule implements ActionResolver {
   }
 
   execute(actionReference: ReferenceEntry): ActionHandler {
+    const effectDeclaration = actionReference
+      .getNode()
+      .getFirstAncestorByKind(SyntaxKind.PropertyDeclaration)
+
+    const propertyName = effectDeclaration?.getName()
+    const fileName = basename(actionReference.getSourceFile().getFilePath())
+
     return {
-      fileName: basename(actionReference.getSourceFile().getFilePath()),
+      caption: `${propertyName} - ${fileName}`,
+      fileName: fileName,
       filePath: actionReference.getSourceFile().getFilePath(),
       category: 'effect'
     }

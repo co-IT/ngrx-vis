@@ -1,5 +1,5 @@
 import { basename } from 'path'
-import { ReferenceEntry, SyntaxKind } from 'ts-morph'
+import { PropertyDeclaration, ReferenceEntry, SyntaxKind } from 'ts-morph'
 import { ActionHandler } from '../core/action-handler'
 import { ActionResolver } from '../core/action-reference-resolver'
 import { extractAllActionTypes } from '../utils/ngrx'
@@ -12,15 +12,31 @@ export class EffectProcessingResolver implements ActionResolver {
   }
 
   execute(actionReference: ReferenceEntry): ActionHandler {
+    const effectDeclaration = actionReference
+      .getNode()
+      .getFirstAncestorByKind(SyntaxKind.PropertyDeclaration)
+
+    const propertyName = effectDeclaration?.getName()
+    const fileName = basename(actionReference.getSourceFile().getFilePath())
+
     return {
-      fileName: basename(actionReference.getSourceFile().getFilePath()),
+      caption: `${propertyName} - ${fileName}`,
+      fileName,
       filePath: actionReference.getSourceFile().getFilePath(),
       category: 'effect',
-      followUpActions: extractAllActionTypes(
-        actionReference
-          .getNode()
-          .getFirstAncestorByKind(SyntaxKind.PropertyDeclaration)
-      )
+      followUpActions:
+        effectDeclaration && !this.isDispatchDisabled(effectDeclaration)
+          ? extractAllActionTypes(effectDeclaration)
+          : []
     }
+  }
+
+  private isDispatchDisabled(effectDeclaration: PropertyDeclaration): boolean {
+    console.log(
+      effectDeclaration.getText().includes('{ dispatch: false }'),
+      effectDeclaration.getText()
+    )
+
+    return effectDeclaration.getText().includes('{ dispatch: false }')
   }
 }

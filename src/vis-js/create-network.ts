@@ -14,7 +14,11 @@ export function createNetwork(actionContexts: ActionContext[]): DataSet {
     )
 
     const dispatcherNodes = actionContext.dispatchers.map(actionDispatcher =>
-      createNode(actionDispatcher.fileName, 1, actionDispatcher.category)
+      createNode(
+        actionDispatcher.caption || actionDispatcher.fileName,
+        1,
+        actionDispatcher.category
+      )
     )
 
     const actionNodeToDispatcherNodesEdges = dispatcherNodes.map(
@@ -24,7 +28,7 @@ export function createNetwork(actionContexts: ActionContext[]): DataSet {
         })
     )
 
-    const dispatchNode = createNode('dispatch', 2, 'dispatch')
+    const dispatchNode = createNode('trigger', 2, 'dispatch')
 
     const dispatcherNodesToDispatchNodeEdges = dispatcherNodes.map(
       dispatcherNode => createEdge(dispatcherNode, dispatchNode)
@@ -35,7 +39,7 @@ export function createNetwork(actionContexts: ActionContext[]): DataSet {
 
     const handlerNodes = actionContext.handlers.map(actionHandler => {
       const actionHandlerNode = createNode(
-        actionHandler.fileName,
+        actionHandler.caption || actionHandler.fileName,
         3,
         actionHandler.category
       )

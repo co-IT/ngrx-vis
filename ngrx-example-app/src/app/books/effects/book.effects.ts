@@ -1,22 +1,22 @@
-import { Injectable } from '@angular/core';
+import { Injectable } from '@angular/core'
 
-import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { asyncScheduler, EMPTY as empty, of } from 'rxjs';
+import { Actions, createEffect, ofType } from '@ngrx/effects'
+import { asyncScheduler, EMPTY as empty, of } from 'rxjs'
 import {
   catchError,
   debounceTime,
   map,
   skip,
   switchMap,
-  takeUntil,
-} from 'rxjs/operators';
+  takeUntil
+} from 'rxjs/operators'
 
-import { Book } from '@example-app/books/models';
+import { Book } from '@example-app/books/models'
 import {
   BooksApiActions,
-  FindBookPageActions,
-} from '@example-app/books/actions';
-import { GoogleBooksService } from '@example-app/core/services';
+  FindBookPageActions
+} from '@example-app/books/actions'
+import { GoogleBooksService } from '@example-app/core/services'
 
 /**
  * Effects offer a way to isolate and easily test side-effects within your
@@ -38,13 +38,13 @@ export class BookEffects {
         debounceTime(debounce, scheduler),
         switchMap(({ query }) => {
           if (query === '') {
-            return empty;
+            return empty
           }
 
           const nextSearch$ = this.actions$.pipe(
             ofType(FindBookPageActions.searchBooks),
             skip(1)
-          );
+          )
 
           return this.googleBooks.searchBooks(query).pipe(
             takeUntil(nextSearch$),
@@ -52,10 +52,10 @@ export class BookEffects {
             catchError(err =>
               of(BooksApiActions.searchFailure({ errorMsg: err.message }))
             )
-          );
+          )
         })
       )
-  );
+  )
 
   constructor(
     private actions$: Actions,
