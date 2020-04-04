@@ -44,7 +44,10 @@ export function createNetwork(actionContexts: ActionContext[]): DataSet {
         actionHandler.category
       )
 
-      if (actionHandler.followUpActions) {
+      if (
+        actionHandler.followUpActions &&
+        actionHandler.followUpActions.length > 0
+      ) {
         const followUpDispatchNode = createNode('dispatch', 4, 'dispatch')
         actionHandlerToFollowUpActionEdges.push(
           createEdge(actionHandlerNode, followUpDispatchNode)

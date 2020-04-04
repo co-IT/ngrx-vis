@@ -32,11 +32,6 @@ export class EffectProcessingResolver implements ActionResolver {
   }
 
   private isDispatchDisabled(effectDeclaration: PropertyDeclaration): boolean {
-    console.log(
-      effectDeclaration.getText().includes('{ dispatch: false }'),
-      effectDeclaration.getText()
-    )
-
     return effectDeclaration.getText().includes('{ dispatch: false }')
   }
 }
