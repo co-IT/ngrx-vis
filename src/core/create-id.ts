@@ -1,6 +1,4 @@
-import { VisJsNodeId } from './index'
-
-export function createNodeId(): VisJsNodeId {
+export function createId(): string {
   return (
     Math.random()
       .toString(36)

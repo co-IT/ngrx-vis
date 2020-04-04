@@ -9,7 +9,8 @@ export function createNetwork(actionContexts: ActionContext[]): DataSet {
     const actionNode = createNode(
       actionContext.actionMeta.typeFull,
       0,
-      'action'
+      'action',
+      actionContext.id
     )
 
     const dispatcherNodes = actionContext.dispatchers.map(actionDispatcher =>

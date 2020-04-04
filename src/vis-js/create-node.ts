@@ -1,6 +1,11 @@
+import { createId } from '../core/create-id'
 import { Node } from './index'
-import { createNodeId } from './create-node-id'
 
-export function createNode(label: string, level: number, group: string): Node {
-  return { id: createNodeId(), label, level, group }
+export function createNode(
+  label: string,
+  level: number,
+  group: string,
+  id = createId()
+): Node {
+  return { id, label, level, group }
 }

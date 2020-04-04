@@ -16,12 +16,12 @@ Vue.component('action-network-graphs', {
       </form>
       <ul class="filter-results">
         <li 
-          v-for="node in filteredActionNodes"
-          :value="node"
-          @click="focusSelectedNode(node)"
+          v-for="action in filteredActions"
+          :value="action"
+          @click="focusSelectedNode(action)"
         >
-          <span class="filter-result-title">{{ node.label }}</span>
-          <span class="filter-result-subtitle"></span>
+          <span class="filter-result-title">{{ action.typeScope }}</span>
+          <span class="filter-result-subtitle">{{ action.typeDescription }}</span>
         </li>
       </ul>
     </nav>
@@ -30,7 +30,6 @@ Vue.component('action-network-graphs', {
           `,
   data() {
     return {
-      actionNodeSelected: null,
       visJsNetwork: null,
       filter: ''
     }
@@ -39,23 +38,21 @@ Vue.component('action-network-graphs', {
     firstNode() {
       return this.nodes[0]
     },
-    filteredActionNodes() {
-      if (!Array.isArray(this.nodes)) {
-        return []
+    filteredActions() {
+      if (!Array.isArray(this.actionsPlain) || !this.filter) {
+        return this.actionsPlain
       }
 
-      if (!this.filter) {
-        return this.nodes.filter(node => node.group === 'action')
-      }
+      const lowerCasedFilter = this.filter.toLowerCase()
 
-      return this.nodes.filter(
-        node =>
-          node.group === 'action' &&
-          node.label.toLowerCase().includes(this.filter.toLowerCase())
+      return this.actionsPlain.filter(
+        action =>
+          action.typeScope.toLowerCase().includes(lowerCasedFilter) ||
+          action.typeDescription.toLowerCase().includes(lowerCasedFilter)
       )
     }
   },
-  props: ['nodes', 'edges', 'options'],
+  props: ['actionsPlain', 'nodes', 'edges', 'options'],
   methods: {
     focusSelectedNode(node) {
       this.visJsNetwork.focus(node.id, {
@@ -76,8 +73,6 @@ Vue.component('action-network-graphs', {
         scale: 1,
         offset: { x: -300, y: -150 }
       })
-
-      this.actionNodeSelected = this.firstNode
     })
   }
 })
@@ -86,6 +81,7 @@ Vue.component('action-network-graphs', {
 const app = new Vue({
   el: '#vue-app',
   data: {
+    actionsPlain: JSON.parse('/* __ACTIONS_PLAIN__ */'),
     networkNodes: JSON.parse('/* __NETWORK_NODES__ */'),
     networkEdges: JSON.parse('/* __NETWORK_EDGES__ */'),
     networkOptions: {

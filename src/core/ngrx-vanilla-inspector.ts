@@ -13,8 +13,14 @@ import {
 } from '../utils/ngrx'
 import { ActionContext } from './action-context'
 import { ActionReferenceMap, ActionResolverRunner } from './action-rule-runner'
+import { createId } from './create-id'
 
-export class NgRxActionInspector {
+export class NgRxVanillaInspector {
+  private parser = new ActionResolverRunner({
+    dispatchers: [new StoreDispatcherResolver(), new EffectDispatcherRule()],
+    handlers: [new ReducerProcessingResolver(), new EffectProcessingResolver()]
+  })
+
   constructor(
     private pathToTsConfig: string,
     private actionFilesGlob: string
@@ -34,6 +40,7 @@ export class NgRxActionInspector {
       .getVariableDeclarations()
       .filter(isTypedAction)
       .map(declaration => ({
+        id: createId(),
         filePath: file.getFilePath(),
         actionMeta: {
           declaredName: declaration.getName(),
@@ -47,18 +54,10 @@ export class NgRxActionInspector {
   private identifyReferences(
     declaration: VariableDeclaration
   ): ActionReferenceMap {
-    const parser = new ActionResolverRunner({
-      dispatchers: [new StoreDispatcherResolver(), new EffectDispatcherRule()],
-      handlers: [
-        new ReducerProcessingResolver(),
-        new EffectProcessingResolver()
-      ]
-    })
-
     const references = declaration
       .findReferences()
       .flatMap(referenceSymbol => referenceSymbol.getReferences())
 
-    return parser.run(references)
+    return this.parser.run(references)
   }
 }

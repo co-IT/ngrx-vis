@@ -1,7 +1,8 @@
 #!/usr/bin/env node
 
 import { Command } from 'commander'
-import { NgRxActionInspector } from './core/ngrx-action-inspector'
+import { extractActions } from './core/extract-actions'
+import { NgRxVanillaInspector } from './core/ngrx-vanilla-inspector'
 import { createNetwork } from './vis-js/create-network'
 import { createWebView } from './web-view/create-web-view'
 
@@ -24,9 +25,11 @@ program.on('--help', () => {
 
 program.parse(process.argv)
 
-const inspector = new NgRxActionInspector(program.project, program.glob)
-const network = createNetwork(inspector.inspect())
+const inspector = new NgRxVanillaInspector(program.project, program.glob)
+const actionContexts = inspector.inspect()
+const actionsPlain = extractActions(actionContexts)
+const network = createNetwork(actionContexts)
 
-createWebView(network)
+createWebView(actionsPlain, network)
   .then(() => console.log('✅ Graph created successfully'))
   .catch(err => console.log(err))
