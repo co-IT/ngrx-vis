@@ -60,9 +60,11 @@ Example call:
 You need at least NgRx 8 installed. NgRx Vis traces actions which are created
 with the `createAction` helper.
 
-### How does a generated graph looks like?
+### How is the graph built?
 
-![action-journey](https://github.com/co-IT/ngrx-vis/blob/master/assets/graphs.png?raw=true)
+NgRx Vis does static code analysis.
+It looks for action declarations, resolves all references and identifies the
+usages of the respective action.
 
 ## Limitations
 
