@@ -7,7 +7,7 @@ import { DataSet, Edge, Node } from './index'
 export function createNetwork(actionContexts: ActionContext[]): DataSet {
   return actionContexts.reduce((dataSet, actionContext) => {
     const actionNode = createNode(
-      actionContext.actionMeta.typeFull,
+      `${actionContext.actionMeta.typeScope}\\n${actionContext.actionMeta.typeDescription}`,
       0,
       'action',
       actionContext.id
