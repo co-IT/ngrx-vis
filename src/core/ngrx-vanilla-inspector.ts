@@ -1,4 +1,10 @@
-import { Project, SourceFile, VariableDeclaration } from 'ts-morph'
+import {
+  Project,
+  ReferencedSymbol,
+  ReferenceEntry,
+  SourceFile,
+  VariableDeclaration
+} from 'ts-morph'
 import {
   EffectDispatcherRule,
   EffectProcessingResolver,
@@ -56,7 +62,13 @@ export class NgRxVanillaInspector {
   ): ActionReferenceMap {
     const references = declaration
       .findReferences()
-      .flatMap(referenceSymbol => referenceSymbol.getReferences())
+      .reduce(
+        (references: ReferenceEntry[], referencedSymbol: ReferencedSymbol) => [
+          ...references,
+          ...referencedSymbol.getReferences()
+        ],
+        []
+      )
 
     return this.parser.run(references)
   }
