@@ -1,0 +1,10 @@
+<app-pokemon-form
+  [pokemon]="pokemon"
+  (update)="onUpdate($event)"
+  (add)="onAdd($event)"
+></app-pokemon-form>
+<app-pokemon-list
+  [pokemons]="pokemons$ | async"
+  (delete)="onDelete($event)"
+  (select)="onSelect($event)"
+></app-pokemon-list>

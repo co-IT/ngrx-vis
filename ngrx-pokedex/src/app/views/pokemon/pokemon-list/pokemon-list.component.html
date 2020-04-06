@@ -1,0 +1,37 @@
+<div fxLayout="row wrap">
+  <div
+    *ngFor="let pokemon of pokemons; trackBy: trackByFn"
+    fxFlex="27%"
+    class="pokemon"
+  >
+    <mat-card class="example-card">
+      <mat-card-header>
+        <mat-card-title> {{ pokemon.name }}</mat-card-title>
+        <mat-card-subtitle> {{ pokemon.description }} </mat-card-subtitle>
+      </mat-card-header>
+
+      <mat-card-content>
+        <img
+          mat-card-image
+          src="assets/images/pokemon/{{ pokemon.photo }}.png"
+        />
+        <ul>
+          <li>Height: {{ pokemon.height }}</li>
+          <li>Weight: {{ pokemon.weight }}</li>
+        </ul>
+      </mat-card-content>
+      <mat-card-actions>
+        <button mat-raised-button color="warn" (click)="deletePokemon(pokemon)">
+          DELETE
+        </button>
+        <button
+          mat-raised-button
+          color="primary"
+          (click)="selectPokemon(pokemon)"
+        >
+          SELECT
+        </button>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+</div>

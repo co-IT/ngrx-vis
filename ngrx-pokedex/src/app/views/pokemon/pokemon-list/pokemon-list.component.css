@@ -1,0 +1,16 @@
+img {
+  height: 100px;
+  width: 100px;
+  margin: 20px;
+}
+.pokemon {
+  display: inline-block;
+  margin: 25px;
+}
+.pokemon-stats--container {
+  display: inline-block;
+}
+
+.pokemon-stats--container > span {
+  display: block;
+}

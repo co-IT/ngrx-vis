@@ -1,0 +1,85 @@
+<mat-card class="container">
+  <form [formGroup]="pokemonForm">
+    <div
+      class="form-element"
+      fxLayout
+      fxLayout.xs="column"
+      fxLayoutAlign="center"
+      fxLayoutGap="10px"
+    >
+      <mat-form-field>
+        <mat-label>Name</mat-label>
+        <input
+          required
+          formControlName="name"
+          class="form-control"
+          placeholder="Pikachu"
+          type="text"
+          matInput
+        />
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Height</mat-label>
+        <input
+          matInput
+          required
+          formControlName="height"
+          class="form-control"
+          placeholder="0.5"
+          type="text"
+        />
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Weight</mat-label>
+        <input
+          matInput
+          required
+          formControlName="weight"
+          class="form-control"
+          placeholder="9.5"
+          type="text"
+        />
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Description</mat-label>
+        <input
+          matInput
+          required
+          formControlName="description"
+          class="form-control"
+          placeholder="Description"
+          type="text"
+        />
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Photo</mat-label>
+        <mat-select required formControlName="photo" class="form-control">
+          <mat-option *ngFor="let photo of photos" [value]="photo.id">{{
+            photo.name
+          }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div class="example-button-row">
+      <button
+        type="button"
+        mat-raised-button
+        color="primary"
+        (click)="addPokemon()"
+        [disabled]="!pokemonForm.valid"
+      >
+        Add pokemon!
+      </button>
+      <button
+        type="button"
+        mat-raised-button
+        color="accent"
+        (click)="updatePokemon()"
+        [disabled]="!pokemonForm.valid"
+      >
+        Update pokemon!
+      </button>
+    </div>
+  </form>
+</mat-card>
