@@ -45,6 +45,9 @@ export class NgRxVanillaInspector {
     return file
       .getVariableDeclarations()
       .filter(isTypedAction)
+      .map(a => {
+        return a
+      })
       .map(declaration => ({
         id: createId(),
         filePath: file.getFilePath(),

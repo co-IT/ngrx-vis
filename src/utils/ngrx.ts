@@ -45,8 +45,5 @@ export function segmentAction(
 }
 
 export function isTypedAction(declaration: Node<ts.Node>): boolean {
-  return declaration
-    .getType()
-    .getText()
-    .includes('.TypedAction<')
+  return /^import.+\.TypedAction</.test(declaration.getType().getText())
 }

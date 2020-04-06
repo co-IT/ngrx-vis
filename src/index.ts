@@ -27,9 +27,17 @@ program.parse(process.argv)
 
 const inspector = new NgRxVanillaInspector(program.project, program.glob)
 const actionContexts = inspector.inspect()
-const actionsPlain = extractActions(actionContexts)
-const network = createNetwork(actionContexts)
 
-createWebView(actionsPlain, network)
-  .then(() => console.log('✅ Graph created successfully'))
-  .catch(err => console.log(err))
+if (!actionContexts?.length) {
+  console.log('📭 Sorry, no action declarations found')
+  console.log(
+    '   Please note that ngrx-vis is not capable of detecting actions in nested data structures, yet.'
+  )
+} else {
+  const actionsPlain = extractActions(actionContexts)
+  const network = createNetwork(actionContexts)
+
+  createWebView(actionsPlain, network)
+    .then(() => console.log('✅ Graph created successfully'))
+    .catch(err => console.log(err))
+}
