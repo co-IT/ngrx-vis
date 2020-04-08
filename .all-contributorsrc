@@ -1,0 +1,25 @@
+{
+  "projectName": "ngrx-vis",
+  "projectOwner": "Gregor Woiwode",
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": true,
+  "commitConvention": "angular",
+  "contributors": [
+    {
+      "login": "GregOnNet",
+      "name": "Gregor Woiwode",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/444278?v=4",
+      "profile": "https://medium.com/@gregor.woiwode",
+      "contributions": [
+        "code",
+        "doc"
+      ]
+    }
+  ],
+  "contributorsPerLine": 7
+}
