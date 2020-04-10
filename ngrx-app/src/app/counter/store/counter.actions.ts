@@ -8,11 +8,11 @@ export const add = createAction(
 export const randomAdd = createAction('[Counter] Add random value');
 
 export const foo = createAction(
-  '[Counter] Foo value',
+  'Foo value',
   props<{ payload: { value: string } }>()
 );
 
 export const substract = createAction(
   '[Counter] Substract value',
-  (value: number = 0) => ({ payload: { value } })
+  (value = 0) => ({ payload: { value } })
 );
